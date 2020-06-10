@@ -1,2 +1,0 @@
-# WebCheckoutReact
-Created with CodeSandbox
