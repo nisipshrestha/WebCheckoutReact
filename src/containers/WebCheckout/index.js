@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import CryptoJS from "crypto-js";
 import FormUI from "./components/FormUI";
-import {
-  withRouter
-} from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
- function WebCheckout(props) {
+function WebCheckout(props) {
   /* ---------------- React Hooks -------------------- */
   const [submitType, setSubmitType] = useState("");
   const [isGenerated, setIsGenerated] = useState(false);
@@ -73,7 +71,7 @@ import {
       setIsGenerated(false);
       console.log(response);
       if (response.status === 200) {
-        history.push(successData.webCheckoutUrl)
+        history.push(successData.webCheckoutUrl);
       } else {
         alert(response.message);
       }
@@ -101,4 +99,4 @@ import {
   );
 }
 
-export default withRouter(WebCheckout)
+export default withRouter(WebCheckout);
