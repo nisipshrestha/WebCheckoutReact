@@ -1,17 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Container, Row, Col, Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 
 import WebCheckout from "./containers/WebCheckout";
+import RedirectPage from "./RedirectPage";
 
 const TopNav = () => {
   return (
     <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">
+        Navbar
+      </Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#features">Features</Nav.Link>
-        <Nav.Link href="#pricing">Pricing</Nav.Link>
+        <Nav.Link as={Link} to="/redirectPage">
+          Redirect Page
+        </Nav.Link>
       </Nav>
     </Navbar>
   );
@@ -19,17 +22,16 @@ const TopNav = () => {
 
 const Content = () => (
   <Router>
+    <TopNav />
     <Switch>
-      <Route exact path="/">
-        <WebCheckout />
-      </Route>
+      <Route exact path="/" component={WebCheckout} />
+      <Route path="/redirectPage" component={RedirectPage} />
     </Switch>
   </Router>
 );
 export default function App() {
   return (
     <>
-      <TopNav />
       <Content />
     </>
   );
