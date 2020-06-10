@@ -53,7 +53,6 @@ export default function WebCheckout() {
   };
 
   const requestToken = async param => {
-    console.log(param);
     const settings = {
       method: "POST",
       headers: {
@@ -68,9 +67,8 @@ export default function WebCheckout() {
         settings
       );
       const { response, data: successData } = await fetchResponse.json();
-      console.log(response, successData);
       setIsGenerated(false);
-
+      console.log(response);
       if (response.status === 200) {
         window.location.replace(successData.webCheckoutUrl);
       } else {
