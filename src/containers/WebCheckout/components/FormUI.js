@@ -88,6 +88,17 @@ export default ({
               </Form.Row>
 
               <Form.Group>
+                <Form.Label>Cancel Url</Form.Label>
+                <Form.Control
+                  type="text"
+                  onChange={handleChange}
+                  name="cancelUrl"
+                  value={data.cancelUrl || ""}
+                  placeholder="Enter Cancel Url"
+                />
+              </Form.Group>
+
+              <Form.Group>
                 <Form.Label>Reference Id</Form.Label>
                 <Form.Control
                   type="text"

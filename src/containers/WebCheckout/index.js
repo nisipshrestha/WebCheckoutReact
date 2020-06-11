@@ -6,9 +6,8 @@ import { withRouter } from "react-router-dom";
 function WebCheckout(props) {
   /* ==================== React Hooks ==================== */
   const [submitType, setSubmitType] = useState("");
-  const [isGenerated, setIsGenerated] = useState(false);
   const [successType, setSuccessType] = useState("");
-
+  const [responseDvh, setResponseDvh] = useState("");
   const [data, setData] = useState({
     apiKey: "3568f8c7-3f33-49dc-bbc9-9362c130f7c8",
     amount: 100.5,
@@ -19,14 +18,13 @@ function WebCheckout(props) {
     dvh: "",
     dateOfRequest: new Date().toLocaleDateString("fr-CA"),
     returnUrl: `${window.location.href}redirectPage`,
-    callbackUrl: "www.callback.com"
+    callbackUrl: "www.callback.com",
+    cancelUrl: "www.cancelUrl.com"
   });
 
   useEffect(() => {
-    if (isGenerated) {
-      requestToken(data);
-    }
-  }, [isGenerated]);
+    if (responseDvh) generateDvh();
+  }, [responseDvh]);
 
   /* ==================== Functions ==================== */
 
@@ -34,11 +32,10 @@ function WebCheckout(props) {
   const generateDvh = () => {
     const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
     const tempData = { ...data };
-    if (!successType) {
-      delete tempData.returnUrl;
-      delete tempData.callbackUrl;
-      delete tempData.cancelUrl;
-    }
+
+    delete tempData.returnUrl;
+    delete tempData.callbackUrl;
+    delete tempData.cancelUrl;
 
     delete tempData.dvh;
     delete tempData.metaData;
@@ -49,8 +46,16 @@ function WebCheckout(props) {
       );
       const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
       const result = CryptoJS.enc.Hex.stringify(hash);
-      setData(state => ({ ...state, dvh: result }));
-      setIsGenerated(true);
+      const tempData = { ...data, dvh: result };
+      if (!responseDvh) {
+        setData(tempData);
+        // 1st API Call
+        requestToken(tempData);
+      } else if (responseDvh && responseDvh === result) {
+        setData(tempData);
+        // 2nd API Call
+        verifyRequest(tempData);
+      }
     } catch (error) {
       throw error;
     }
@@ -62,8 +67,46 @@ function WebCheckout(props) {
     setData(state => ({ ...state, [name]: value }));
   };
 
+  /* -------------------- FN verifyRequest -------------------- */
+  const verifyRequest = async param => {
+    const settings = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(param)
+    };
+
+    try {
+      const fetchResponse = await fetch(
+        "https://bfi-merchant.bitsbeat.com/api/v1/merchant/web-checkout/verify-request",
+        settings
+      );
+      const { response, data: successData } = await fetchResponse.json();
+
+      if (response.status === 200) {
+        if (!successType) {
+          const { token, dvh, ...rest } = successData;
+          console.log(successData);
+          setSuccessType("verification Success");
+        }
+        // window.location.replace(successData.webCheckoutUrl);
+      } else {
+        alert(response.message);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   /* -------------------- FN requestToken -------------------- */
-  const requestToken = async ({ returnUrl, callbackUrl, ...rest }) => {
+  const requestToken = async ({
+    returnUrl,
+    callbackUrl,
+    cancelUrl,
+    ...rest
+  }) => {
     const settings = {
       method: "POST",
       headers: {
@@ -79,21 +122,22 @@ function WebCheckout(props) {
         settings
       );
       const { response, data: successData } = await fetchResponse.json();
-      setIsGenerated(false);
 
       if (response.status === 200) {
         if (!successType) {
-          const { token, ...rest } = successData;
+          const { token, dvh, ...rest } = successData;
           let validData = true;
 
           Object.keys(rest).forEach(x => {
             validData = validData && rest[x] === data[x];
-            console.log([validData, rest[x], data[x], rest[x] === data[x]]);
           });
 
-          setSuccessType("initial Success");
+          if (validData) {
+            setData(state => ({ ...state, token }));
+            setResponseDvh(dvh);
+            setSuccessType("initial Success");
+          }
         }
-        // history.push(successData.webCheckoutUrl);
       } else {
         alert(response.message);
       }
