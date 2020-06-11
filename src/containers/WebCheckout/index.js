@@ -16,7 +16,7 @@ function WebCheckout(props) {
     referenceId: ``,
     dvh: "",
     dateOfRequest: new Date().toLocaleDateString("fr-CA"),
-    returnUrl: "www.return.com",
+    returnUrl: `${window.location.href}redirectPage`,
     callbackUrl: "www.callback.com"
   });
 
