@@ -27,34 +27,53 @@ function WebCheckout(props) {
   }, [responseDvh]);
 
   /* ==================== Functions ==================== */
+  function removeKeys(param) {
+    delete param.returnUrl;
+    delete param.callbackUrl;
+    delete param.cancelUrl;
+    delete param.dvh;
+    delete param.metaData;
+    delete param.context;
+    // console.log("-----param ", param);
+    return param;
+  }
 
+  /* -------------------- FN generateDvh -------------------- */
+  const computeDvh = filteredData => {
+    const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
+
+    const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
+      "base64"
+    );
+    const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
+    return CryptoJS.enc.Hex.stringify(hash);
+  };
   /* -------------------- FN generateDvh -------------------- */
   const generateDvh = () => {
     const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
-    const tempData = { ...data };
+    const filteredData = removeKeys({ ...data });
 
-    delete tempData.returnUrl;
-    delete tempData.callbackUrl;
-    delete tempData.cancelUrl;
-
-    delete tempData.dvh;
-    delete tempData.metaData;
-    delete tempData.context;
+    console.log("-----filteredData ", filteredData);
     try {
-      const dvhString = Buffer.from(JSON.stringify(tempData)).toString(
+      const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
         "base64"
       );
       const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
       const result = CryptoJS.enc.Hex.stringify(hash);
       const tempData = { ...data, dvh: result };
+
       if (!responseDvh) {
         setData(tempData);
         // 1st API Call
         requestToken(tempData);
       } else if (responseDvh && responseDvh === result) {
-        setData(tempData);
+        const { dvh: exclude, ...rest } = tempData;
+
+        const requestObject = { ...rest, dvh: computeDvh(rest) };
+        // console.log("---------tempData", rest);
+        setData(rest);
         // 2nd API Call
-        verifyRequest(tempData);
+        verifyRequest(requestObject);
       }
     } catch (error) {
       throw error;
@@ -86,12 +105,8 @@ function WebCheckout(props) {
       const { response, data: successData } = await fetchResponse.json();
 
       if (response.status === 200) {
-        if (!successType) {
-          const { token, dvh, ...rest } = successData;
-          console.log(successData);
-          setSuccessType("verification Success");
-        }
-        // window.location.replace(successData.webCheckoutUrl);
+        const { token, dvh, ...rest } = successData;
+        window.location.replace(successData.webCheckoutUrl);
       } else {
         alert(response.message);
       }
@@ -126,6 +141,8 @@ function WebCheckout(props) {
       if (response.status === 200) {
         if (!successType) {
           const { token, dvh, ...rest } = successData;
+          console.log(successData);
+
           let validData = true;
 
           Object.keys(rest).forEach(x => {
