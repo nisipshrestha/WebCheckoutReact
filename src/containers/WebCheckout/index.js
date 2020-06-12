@@ -27,21 +27,19 @@ function WebCheckout(props) {
   }, [responseDvh]);
 
   /* ==================== Functions ==================== */
-  function removeKeys(param) {
+  /* -------------------- FN removeKeys -------------------- */
+  const removeKeys = param => {
     delete param.returnUrl;
     delete param.callbackUrl;
     delete param.cancelUrl;
     delete param.dvh;
     delete param.metaData;
     delete param.context;
-    // console.log("-----param ", param);
     return param;
-  }
-
-  /* -------------------- FN generateDvh -------------------- */
+  };
+  /* -------------------- FN computeDvh -------------------- */
   const computeDvh = filteredData => {
     const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
-
     const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
       "base64"
     );
@@ -50,27 +48,17 @@ function WebCheckout(props) {
   };
   /* -------------------- FN generateDvh -------------------- */
   const generateDvh = () => {
-    const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
     const filteredData = removeKeys({ ...data });
-
-    console.log("-----filteredData ", filteredData);
     try {
-      const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
-        "base64"
-      );
-      const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
-      const result = CryptoJS.enc.Hex.stringify(hash);
+      const result = computeDvh(filteredData);
       const tempData = { ...data, dvh: result };
-
       if (!responseDvh) {
         setData(tempData);
         // 1st API Call
         requestToken(tempData);
       } else if (responseDvh && responseDvh === result) {
         const { dvh: exclude, ...rest } = tempData;
-
         const requestObject = { ...rest, dvh: computeDvh(rest) };
-        // console.log("---------tempData", rest);
         setData(rest);
         // 2nd API Call
         verifyRequest(requestObject);
@@ -79,7 +67,6 @@ function WebCheckout(props) {
       throw error;
     }
   };
-
   /* -------------------- FN handleChange -------------------- */
   const handleChange = e => {
     const { name, value } = e.target;
@@ -141,10 +128,8 @@ function WebCheckout(props) {
       if (response.status === 200) {
         if (!successType) {
           const { token, dvh, ...rest } = successData;
-          console.log(successData);
 
           let validData = true;
-
           Object.keys(rest).forEach(x => {
             validData = validData && rest[x] === data[x];
           });

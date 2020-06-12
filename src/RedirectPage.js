@@ -1,29 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-function RedirectPage(props) {
-  var a = {
-    token:
-      "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhcGlLZXkiOiIzNTY4ZjhjNy0zZjMzLTQ5ZGMtYmJjOS05MzYyYzEzMGY3YzgiLCJyZWZlcmVuY2VJZCI6ImRhcmF6LTEyMzQzODU2ODQwOCIsImlhdCI6MTU5MTg1MjY5MCwiZXhwIjoxNTkyMTExODkwfQ.JfM-QC70lXKzmBeuq7AhJMECdeV036X-8MnazNq6ngLE0DUZyHNpWXhLBThjPk9xL0FaRviZa5mwpg4UTqHVEw",
-    referenceId: "pr1591880007655"
-  };
-  console.log(JSON.stringify((a)).toString("base64"));
-  if ((props.location || {}).search) {
-    const search = props.location.search.substring(1);
-    const parsedVal = JSON.parse(
-      '{"' +
-        decodeURI(search)
-          .replace(/"/g, '\\"')
-          .replace(/&/g, '","')
-          .replace(/=/g, '":"') +
-        '"}'
-    );
+import RedirectForm from "./components/RedirectForm";
 
-    console.log(parsedVal);
+function RedirectPage(props) {
+  const [submitType, setSubmitType] = useState("");
+  const [successType, setSuccessType] = useState("");
+  const [responseDvh, setResponseDvh] = useState("");
+  const [data, setData] = useState({
+    merchantCode: "Some Value",
+    bankCode: "Some Value",
+    orderNumber: "Some Value",
+    tokenId: "Some Value",
+    amount: "Some Value",
+    charge: "Some Value",
+    discount: "Some Value",
+    txnId: "Some Value"
+  });
+
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return "";
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
+
+  const search = props.location.search.substring(1);
+  console.log(getParameterByName(search));
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    // setData(state => ({ ...state, [name]: value }));
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (submitType === "submit") {
+      console.log("submit");
+    }
+  };
   return (
-    <>
-      <h1>asdf</h1>
-    </>
+    <RedirectForm
+      handleSubmit={handleSubmit}
+      handleChange={handleChange}
+      data={data}
+      setData={setData}
+      setSubmitType={setSubmitType}
+    />
   );
 }
 export default withRouter(RedirectPage);
