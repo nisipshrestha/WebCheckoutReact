@@ -1,36 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 
+import {
+  computeDvh,
+  removeKeys,
+  getParameterByName,
+  dataExtractor,
+  apiSettings as settings
+} from "../commonHelper";
 import FailurePage from "./FailurePage";
 import SuccessPage from "./components/RedirectForm";
 
-const getParameterByName = (name, url) => {
-  if (!name) return "";
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return "";
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-};
+const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
 
 const RedirectPage = () => {
   const [toDisplay, setToDisplay] = useState(null);
 
   useEffect(() => {
     const extractedData = getParameterByName("data");
+
     if (extractedData) {
-      const transactionDetail = JSON.parse(
-        Buffer.from(extractedData, "base64").toString("ascii")
-      );
-      const { dvh, token, txnStatus, txnMessage, ...rest } = transactionDetail;
-      displaySetter(`${txnStatus}`, rest);
+      const transactionDetail = dataExtractor(extractedData);
+      const { dvh, ...rest } = transactionDetail;
+
+      verifyRequest({
+        ...rest,
+        dvh: computeDvh(rest),
+        totalAmount: parseFloat(rest.totalAmount)
+      });
+
+      // console.log({
+      //   apiKey,
+      //   token,
+      //   totalAmount: rest.totalAmount,
+      //   referenceId: rest.referenceId
+      // });
+      displaySetter(rest);
     }
   }, []);
 
-  const displaySetter = (txnStatus, data, title) => {
-    switch (txnStatus) {
+  /* -------------------- FN verifyRequest -------------------- */
+  const verifyRequest = async param => {
+    settings.body = JSON.stringify(param);
+    console.log(settings.body);
+    try {
+      const fetchResponse = await fetch(
+        `${API_BASE}merchant/web-checkout/verify-transaction`,
+        settings
+      );
+      const { response, data: successData } = await fetchResponse.json();
+
+      console.log(successData);
+      if (response.status === 200) {
+      } else {
+        alert(response.message);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const displaySetter = data => {
+    switch (data.txnStatus) {
       // switch ("01") {
       case "00":
         setToDisplay(<SuccessPage data={data} title={"Success"} />);

@@ -2,11 +2,11 @@ import React from "react";
 import { Container, Row, Col, Form, Button, ListGroup } from "react-bootstrap";
 
 const nameMapper = {
-  txnId: "Transaction Id",
   referenceId: "Reference Id",
   merchantName: "Merchant Name",
   bankCode: "Bank Code",
   amount: "Amount",
+  totalAmount: "Total Amount",
   charge: "Charge",
   discount: "Discount"
 };

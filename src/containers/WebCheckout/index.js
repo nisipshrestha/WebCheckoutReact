@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
-import CryptoJS from "crypto-js";
 import FormUI from "./components/FormUI";
 import { withRouter } from "react-router-dom";
+import {
+  computeDvh,
+  removeKeys,
+  apiSettings as settings
+} from "../commonHelper";
+
+const API_BASE = 'https://bfi-merchant.bitsbeat.com/api/v1/';
 
 function WebCheckout(props) {
   /* ==================== React Hooks ==================== */
@@ -27,27 +33,6 @@ function WebCheckout(props) {
   }, [responseDvh]);
 
   /* ==================== Functions ==================== */
-  /* -------------------- FN removeKeys -------------------- */
-  const removeKeys = param => {
-    delete param.returnUrl;
-    delete param.callbackUrl;
-    delete param.cancelUrl;
-    delete param.dvh;
-    delete param.metaData;
-    delete param.context;
-    return param;
-  };
-
-  /* -------------------- FN computeDvh -------------------- */
-  const computeDvh = filteredData => {
-    const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
-    const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
-      "base64"
-    );
-    const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
-    return CryptoJS.enc.Hex.stringify(hash);
-  };
-
   /* -------------------- FN generateDvh -------------------- */
   const generateDvh = () => {
     const filteredData = removeKeys({ ...data });
@@ -80,18 +65,10 @@ function WebCheckout(props) {
 
   /* -------------------- FN verifyRequest -------------------- */
   const verifyRequest = async param => {
-    const settings = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(param)
-    };
-
+    settings.body = JSON.stringify(param);
     try {
       const fetchResponse = await fetch(
-        "https://bfi-merchant.bitsbeat.com/api/v1/merchant/web-checkout/verify-request",
+        `${API_BASE}merchant/web-checkout/verify-request`,
         settings
       );
       const { response, data: successData } = await fetchResponse.json();
@@ -114,18 +91,10 @@ function WebCheckout(props) {
     cancelUrl,
     ...rest
   }) => {
-    const settings = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(rest)
-    };
-
+    settings.body = JSON.stringify(rest);
     try {
       const fetchResponse = await fetch(
-        "https://bfi-merchant.bitsbeat.com/api/v1/merchant/web-checkout/token",
+        `${API_BASE}merchant/web-checkout/token`,
         settings
       );
       const { response, data: successData } = await fetchResponse.json();
@@ -138,7 +107,6 @@ function WebCheckout(props) {
           Object.keys(rest).forEach(x => {
             validData = validData && rest[x] === data[x];
           });
-
           if (validData) {
             setData(state => ({ ...state, token }));
             setResponseDvh(dvh);
