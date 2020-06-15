@@ -1,6 +1,10 @@
 import React from "react";
 
-export default props => {
-  const message = "Failed";
-  return <h1 className="text-danger">{message}</h1>;
+export default ({ title }) => {
+  return (
+    <div className="text-danger">
+      <h1 className="display-4">{title.toUpperCase()}</h1>
+      <p>Your transaction failed, please try again or contact site support.</p>
+    </div>
+  );
 };

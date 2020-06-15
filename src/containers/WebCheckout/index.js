@@ -19,7 +19,7 @@ function WebCheckout(props) {
     dateOfRequest: new Date().toLocaleDateString("fr-CA"),
     returnUrl: `${window.location.href}redirectPage`,
     callbackUrl: "www.callback.com",
-    cancelUrl: "www.cancelUrl.com"
+    cancelUrl: window.location.href
   });
 
   useEffect(() => {
@@ -37,6 +37,7 @@ function WebCheckout(props) {
     delete param.context;
     return param;
   };
+
   /* -------------------- FN computeDvh -------------------- */
   const computeDvh = filteredData => {
     const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
@@ -46,6 +47,7 @@ function WebCheckout(props) {
     const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
     return CryptoJS.enc.Hex.stringify(hash);
   };
+
   /* -------------------- FN generateDvh -------------------- */
   const generateDvh = () => {
     const filteredData = removeKeys({ ...data });
@@ -54,12 +56,14 @@ function WebCheckout(props) {
       const tempData = { ...data, dvh: result };
       if (!responseDvh) {
         setData(tempData);
+
         // 1st API Call
         requestToken(tempData);
       } else if (responseDvh && responseDvh === result) {
         const { dvh: exclude, ...rest } = tempData;
         const requestObject = { ...rest, dvh: computeDvh(rest) };
         setData(rest);
+
         // 2nd API Call
         verifyRequest(requestObject);
       }
@@ -67,6 +71,7 @@ function WebCheckout(props) {
       throw error;
     }
   };
+
   /* -------------------- FN handleChange -------------------- */
   const handleChange = e => {
     const { name, value } = e.target;
