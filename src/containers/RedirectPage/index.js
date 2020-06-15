@@ -23,11 +23,16 @@ const RedirectPage = () => {
       const transactionDetail = dataExtractor(extractedData);
       const { dvh, ...rest } = transactionDetail;
 
-      verifyRequest({
-        ...rest,
-        dvh: computeDvh(rest),
-        totalAmount: parseFloat(rest.totalAmount)
-      });
+      (() => {
+        const { apiKey, referenceId, token, totalAmount } = rest;
+        verifyRequest({
+          apiKey,
+          referenceId,
+          token,
+          totalAmount,
+          dvh: computeDvh(rest)
+        });
+      })();
 
       // console.log({
       //   apiKey,
