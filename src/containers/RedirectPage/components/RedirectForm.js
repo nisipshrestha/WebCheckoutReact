@@ -11,13 +11,7 @@ const nameMapper = {
   discount: "Discount",
   txnId: "Transaction Id"
 };
-export default ({
-  handleSubmit,
-  handleChange,
-  data,
-  setData,
-  setSubmitType
-}) => {
+export default ({ data }) => {
   return (
     <Container>
       <div className="text-center">
