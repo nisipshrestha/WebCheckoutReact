@@ -29,7 +29,7 @@ const RedirectPage = () => {
           apiKey,
           referenceId,
           token,
-          totalAmount,
+          totalAmount: parseFloat(totalAmount),
           dvh: computeDvh(rest)
         });
       })();
