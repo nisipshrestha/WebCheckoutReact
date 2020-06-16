@@ -25,7 +25,7 @@ const RedirectPage = () => {
 
       (() => {
         const { apiKey, referenceId, token, totalAmount } = rest;
-        verifyRequest({
+        verifyTransaction({
           apiKey,
           referenceId,
           token,
@@ -37,8 +37,8 @@ const RedirectPage = () => {
     }
   }, []);
 
-  /* -------------------- FN verifyRequest -------------------- */
-  const verifyRequest = async param => {
+  /* -------------------- FN verifyTransaction -------------------- */
+  const verifyTransaction = async param => {
     settings.body = JSON.stringify(param);
     try {
       const fetchResponse = await fetch(
@@ -48,7 +48,6 @@ const RedirectPage = () => {
       const { response, data: successData } = await fetchResponse.json();
 
       if (response.status === 200) {
-        console.log(successData);
       } else {
         alert(response.message);
       }
