@@ -20,13 +20,10 @@ export default ({
             <Form onSubmit={handleSubmit}>
               <Form.Row>
                 <Form.Group as={Col}>
-                  <Form.Label>API Key</Form.Label>
-                  <Form.Control
-                    type="text"
-                    onChange={handleChange}
-                    name="apiKey"
-                    value={data.apiKey || ""}
-                    placeholder="Enter API Key"
+                  <Form.Label>Merchant</Form.Label>
+                  <Form.Control                    
+                    readOnly
+                    defaultValue="Web Checkout Merchant"
                   />
                 </Form.Group>
                 <Form.Group as={Col}>

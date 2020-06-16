@@ -9,7 +9,7 @@ import {
   apiSettings as settings
 } from "../commonHelper";
 import FailurePage from "./FailurePage";
-import SuccessPage from "./components/RedirectForm";
+import SuccessPage from "./components/SuccessForm";
 
 const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
 
@@ -33,13 +33,6 @@ const RedirectPage = () => {
           dvh: computeDvh(rest)
         });
       })();
-
-      // console.log({
-      //   apiKey,
-      //   token,
-      //   totalAmount: rest.totalAmount,
-      //   referenceId: rest.referenceId
-      // });
       displaySetter(rest);
     }
   }, []);
@@ -47,7 +40,6 @@ const RedirectPage = () => {
   /* -------------------- FN verifyRequest -------------------- */
   const verifyRequest = async param => {
     settings.body = JSON.stringify(param);
-    console.log(settings.body);
     try {
       const fetchResponse = await fetch(
         `${API_BASE}merchant/web-checkout/verify-transaction`,
@@ -55,8 +47,8 @@ const RedirectPage = () => {
       );
       const { response, data: successData } = await fetchResponse.json();
 
-      console.log(successData);
       if (response.status === 200) {
+        console.log(successData);
       } else {
         alert(response.message);
       }
