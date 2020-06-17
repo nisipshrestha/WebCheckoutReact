@@ -27,6 +27,37 @@ function WebCheckout(props) {
     cancelUrl: window.location.href
   });
 
+  const [merchantList, setMerchantList] = useState([
+    {
+      name: "Web Checkout",
+      apiKey: "3568f8c7-3f33-49dc-bbc9-9362c130f7c8",
+      secretKey: "3568f8c73f3349dcbbc99362c130f7c8",
+      active: true
+    },
+    {
+      name: "Western Tandoori",
+      apiKey: "619cda33-b3e9-43ee-a938-c62a044fb7f2",
+      secretKey: "cbac3523560c4f0580a29441481d785d"
+    },
+    {
+      name: "Delicious Momo",
+      apiKey: "e8c961a9-3268-4ed7-939f-943835402173",
+      secretKey: "a723551b1b004d60b43d36534d5f61bf"
+    }
+  ]);
+
+  const [selectedMerchantData, setSelectedMerchantData] = useState({
+    name: "",
+    secretKey: ""
+  });
+
+  useEffect(() => {
+    const { name, secretKey } = merchantList.find(x => x.active) || {};
+    if (name && secretKey) {
+      setSelectedMerchantData({ name, secretKey });
+    }
+  }, []);
+
   useEffect(() => {
     if (responseDvh) {
       const filteredData = removeKeys({ ...data });
@@ -43,32 +74,14 @@ function WebCheckout(props) {
     }
   }, [responseDvh]);
 
-  /* ==================== Functions ==================== */
-  // /* -------------------- FN generateDvh -------------------- */
-  // const generateDvh = () => {
-  //   const filteredData = removeKeys({ ...data });
-  //   try {
-  //     const result = computeDvh(filteredData);
-  //     const tempData = { ...data, dvh: result };
-  //     if (!responseDvh) {
-  //       setData(tempData);
-
-  //       // 1st API Call
-  //       requestToken(tempData);
-  //     }
-  //     //
-  //     else if (responseDvh && responseDvh === result) {
-  //       const { dvh: exclude, ...rest } = tempData;
-  //       const requestObject = { ...rest, dvh: computeDvh(rest) };
-  //       setData(rest);
-
-  //       // 2nd API Call
-  //       verifyRequest(requestObject);
-  //     }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
+  /* -------------------- FN handleMerchantSelection -------------------- */
+  const handleMerchantSelection = param => {
+    console.log(param);
+    setMerchantList(
+      merchantList.map(x => ({ ...x, active: x.name === param.name }))
+    );
+    setData(state => ({ ...state, merchant: param.name }));
+  };
 
   /* -------------------- FN handleGenerateDvh -------------------- */
   const handleGenerateDvh = () => {
@@ -162,6 +175,8 @@ function WebCheckout(props) {
       handleSubmit={handleSubmit}
       handleChange={handleChange}
       handleGenerateDvh={handleGenerateDvh}
+      handleMerchantSelection={handleMerchantSelection}
+      merchantList={merchantList}
       data={data}
       setData={setData}
       setSubmitType={setSubmitType}

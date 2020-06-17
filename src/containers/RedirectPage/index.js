@@ -16,65 +16,62 @@ const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
 const RedirectPage = () => {
   const [toDisplay, setToDisplay] = useState(null);
 
+  const [isVerified, setIsVerified] = useState(false);
+  const [transactionDetail, setTransactionDetail] = useState({});
+  const [verifiedData, setVerifiedData] = useState({});
   useEffect(() => {
-    const extractedData = getParameterByName("data");
-
-    if (extractedData) {
-      const transactionDetail = dataExtractor(extractedData);
-      const { dvh, ...rest } = transactionDetail;
-
-      (() => {
-        const { apiKey, referenceId, token, totalAmount } = rest;
-        verifyTransaction({
-          apiKey,
-          referenceId,
-          token,
-          totalAmount: parseFloat(totalAmount),
-          dvh: computeDvh(rest)
-        });
-      })();
-      displaySetter(rest);
-    }
+    const urlData = getParameterByName("data");
+    if (urlData) setTransactionDetail(dataExtractor(urlData));
   }, []);
 
-  /* -------------------- FN verifyTransaction -------------------- */
-  const verifyTransaction = async param => {
-    settings.body = JSON.stringify(param);
-    try {
-      const fetchResponse = await fetch(
-        `${API_BASE}merchant/web-checkout/verify-transaction`,
-        settings
-      );
-      const { response, data: successData } = await fetchResponse.json();
+  const handleVerify = () => {
+    const { dvh, ...rest } = transactionDetail;
+    const { apiKey, referenceId, token, totalAmount } = rest;
 
-      if (response.status === 200) {
-      } else {
-        alert(response.message);
+    (async param => {
+      settings.body = JSON.stringify(param);
+      try {
+        const fetchResponse = await fetch(
+          `${API_BASE}merchant/web-checkout/verify-transaction`,
+          settings
+        );
+        const { response, data: successData } = await fetchResponse.json();
+        if (response.status === 200) {
+          setIsVerified(true);
+          setVerifiedData(successData);
+        } else {
+          alert(response.message);
+        }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
-    }
+    })({
+      apiKey,
+      referenceId,
+      token,
+      totalAmount: parseFloat(totalAmount),
+      dvh: computeDvh(rest)
+    });
   };
 
-  const displaySetter = data => {
-    switch (data.txnStatus) {
-      // switch ("01") {
-      case "00":
-        setToDisplay(<SuccessPage data={data} title={"Success"} />);
-        break;
-      case "01":
-      case "03":
-        setToDisplay(<FailurePage title={"Transaction Failed"} />);
-        break;
-      case "02":
-        break;
-      default:
-        break;
-    }
-  };
+  const { txnStatus } = transactionDetail || {};
   return (
     <Container>
-      {toDisplay || <h1 className="display-4">NOTHING TO DISPLAY</h1>}
+      {(!txnStatus && <h1 className="display-4">NOTHING TO DISPLAY</h1>) ||
+        (txnStatus === "00" &&
+          ((
+            <SuccessPage
+              isVerified={isVerified}
+              data={transactionDetail}
+              title={"Success"}
+              handleVerify={handleVerify}
+              verifiedData={verifiedData}
+            />
+          ) ||
+            txnStatus === "01" ||
+            (txnStatus === "03" && (
+              <FailurePage title={"Transaction Failed"} />
+            ))))}
     </Container>
   );
 };

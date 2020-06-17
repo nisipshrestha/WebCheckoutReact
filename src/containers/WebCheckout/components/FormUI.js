@@ -1,10 +1,21 @@
 import React from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  CardGroup,
+  ListGroup
+} from "react-bootstrap";
 
 export default ({
   handleSubmit,
   handleChange,
   handleGenerateDvh,
+  handleMerchantSelection,
+  merchantList,
   data,
   setData,
   setSubmitType
@@ -15,41 +26,71 @@ export default ({
         <h1 className="display-4">Web Checkout</h1>
       </div>
 
-      <Container>
-        <Row>
-          <Form.Group as={Col} sm="6">
-            <Form.Label>API Key</Form.Label>
-            <Form.Control
-              type="text"
-              onChange={handleChange}
-              name="apiKey"
-              value={data.apiKey || ""}
-              placeholder="Enter API Key"
-            />
-          </Form.Group>
+      <CardGroup>
+        <Card>
+          <Card.Body>
+            <h2>Merchant Selection</h2>
+            <ListGroup as="ul">
+              {merchantList.map((x, i) => (
+                <ListGroup.Item
+                  key={`${i + 1}`}
+                  as="li"
+                  active={x.active}
+                  onClick={e => handleMerchantSelection({ ...x })}
+                  style={{ cursor: "pointer" }}
+                >
+                  {x.name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Card.Body>
+        </Card>
 
-          <Form.Group as={Col}>
-            <Form.Label>Date Of Request</Form.Label>
-            <Form.Control
-              type="date"
-              onChange={handleChange}
-              name="dateOfRequest"
-              value={data.dateOfRequest || ""}
-              placeholder="Enter Date Of Request"
-            />
-          </Form.Group>
-        </Row>
-        <Row>
-          <Col md="12">
+        <Card>
+          <Card.Body>
             <Form onSubmit={handleSubmit}>
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>Merchant</Form.Label>
-                  <Form.Control readOnly defaultValue="Web Checkout Merchant" />
-                </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  API Key
+                </Form.Label>
+                <Col sm md lg>
+                  <Form.Control
+                    type="text"
+                    onChange={handleChange}
+                    name="apiKey"
+                    value={data.apiKey || ""}
+                    placeholder="Enter API Key"
+                  />
+                </Col>
+              </Form.Group>
 
-                <Form.Group as={Col}>
-                  <Form.Label>Amount</Form.Label>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Date Of Request
+                </Form.Label>
+                <Col sm md lg>
+                  <Form.Control
+                    type="date"
+                    onChange={handleChange}
+                    name="dateOfRequest"
+                    value={data.dateOfRequest || ""}
+                    placeholder="Enter Date Of Request"
+                  />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Merchant
+                </Form.Label>
+                <Col sm md lg>
+                  <Form.Control readOnly defaultValue="Web Checkout Merchant" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Amount
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -57,12 +98,14 @@ export default ({
                     value={data.amount || ""}
                     placeholder="Enter Amount"
                   />
-                </Form.Group>
-              </Form.Row>
+                </Col>
+              </Form.Group>
 
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>Currency</Form.Label>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Currency
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -70,9 +113,13 @@ export default ({
                     value={data.currency || ""}
                     placeholder="Enter Currency"
                   />
-                </Form.Group>
-                <Form.Group as={Col}>
-                  <Form.Label>Bank Code</Form.Label>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Bank Code
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -80,12 +127,13 @@ export default ({
                     value={data.bankCode || ""}
                     placeholder="Enter Bank Code"
                   />
-                </Form.Group>
-              </Form.Row>
-
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>Return Url</Form.Label>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Return Url
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -93,9 +141,13 @@ export default ({
                     value={data.returnUrl || ""}
                     placeholder="Enter Return Url"
                   />
-                </Form.Group>
-                <Form.Group as={Col}>
-                  <Form.Label>Callback Url</Form.Label>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Callback Url
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -103,12 +155,13 @@ export default ({
                     value={data.callbackUrl || ""}
                     placeholder="Enter Callback Url"
                   />
-                </Form.Group>
-              </Form.Row>
-
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Label>Cancel Url</Form.Label>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Cancel Url
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -116,9 +169,14 @@ export default ({
                     value={data.cancelUrl || ""}
                     placeholder="Enter Cancel Url"
                   />
-                </Form.Group>
-                <Form.Group as={Col}>
-                  <Form.Label>Reference Id</Form.Label>
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
+                  Reference Id
+                </Form.Label>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     onChange={handleChange}
@@ -126,11 +184,10 @@ export default ({
                     value={data.referenceId || ""}
                     placeholder="Enter Reference Id"
                   />
-                </Form.Group>
-              </Form.Row>
-
-              <Row>
-                <Form.Group as={Col}>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col sm="4">
                   <Button
                     variant="success"
                     type="button"
@@ -139,22 +196,20 @@ export default ({
                   >
                     Generate DVH
                   </Button>
-                </Form.Group>
-              </Row>
-
-              <Row>
-                <Form.Group as={Col}>
+                </Col>
+                <Col sm md lg>
                   <Form.Control
                     type="text"
                     as="textarea"
+                    rows="4"
                     onChange={handleChange}
                     name="dvh"
                     value={data.dvh || ""}
                     placeholder="Enter DVH"
                   />
-                </Form.Group>
-              </Row>
-
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} />
               <Form.Group>
                 <Button
                   variant="danger"
@@ -175,9 +230,9 @@ export default ({
                 </Button>
               </Form.Group>
             </Form>
-          </Col>
-        </Row>
-      </Container>
+          </Card.Body>
+        </Card>
+      </CardGroup>
     </Container>
   );
 };
