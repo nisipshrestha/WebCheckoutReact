@@ -148,7 +148,7 @@ export default ({
                     type="text"
                     as="textarea"
                     onChange={handleChange}
-                    name="dateOfRequest"
+                    name="dvh"
                     value={data.dvh || ""}
                     placeholder="Enter DVH"
                   />
