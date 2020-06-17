@@ -129,6 +129,7 @@ function WebCheckout(props) {
         let validData = true;
         Object.keys(rest).forEach(x => {
           validData = validData && rest[x] === data[x];
+          console.log([x, rest[x], data[x]]);
         });
 
         if (validData) {
