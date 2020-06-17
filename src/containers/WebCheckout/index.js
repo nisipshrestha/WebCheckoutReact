@@ -7,7 +7,7 @@ import {
   apiSettings as settings
 } from "../commonHelper";
 
-const API_BASE = 'https://bfi-merchant.bitsbeat.com/api/v1/';
+const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
 
 function WebCheckout(props) {
   /* ==================== React Hooks ==================== */
@@ -44,7 +44,9 @@ function WebCheckout(props) {
 
         // 1st API Call
         requestToken(tempData);
-      } else if (responseDvh && responseDvh === result) {
+      }
+      //
+      else if (responseDvh && responseDvh === result) {
         const { dvh: exclude, ...rest } = tempData;
         const requestObject = { ...rest, dvh: computeDvh(rest) };
         setData(rest);

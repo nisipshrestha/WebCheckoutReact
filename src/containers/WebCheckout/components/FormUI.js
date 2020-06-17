@@ -16,15 +16,25 @@ export default ({
 
       <Container>
         <Row>
+          <Form.Group as={Col} md="6">
+            <Form.Label>API Key</Form.Label>
+            <Form.Control
+              type="text"
+              onChange={handleChange}
+              name="apiKey"
+              value={data.apiKey || ""}
+              placeholder="Enter API Key"
+            />
+          </Form.Group>
+        </Row>
+
+        <Row>
           <Col md="12">
             <Form onSubmit={handleSubmit}>
               <Form.Row>
                 <Form.Group as={Col}>
                   <Form.Label>Merchant</Form.Label>
-                  <Form.Control                    
-                    readOnly
-                    defaultValue="Web Checkout Merchant"
-                  />
+                  <Form.Control readOnly defaultValue="Web Checkout Merchant" />
                 </Form.Group>
                 <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
@@ -84,27 +94,28 @@ export default ({
                 </Form.Group>
               </Form.Row>
 
-              <Form.Group>
-                <Form.Label>Cancel Url</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={handleChange}
-                  name="cancelUrl"
-                  value={data.cancelUrl || ""}
-                  placeholder="Enter Cancel Url"
-                />
-              </Form.Group>
-
-              <Form.Group>
-                <Form.Label>Reference Id</Form.Label>
-                <Form.Control
-                  type="text"
-                  onChange={handleChange}
-                  name="referenceId"
-                  value={data.referenceId || ""}
-                  placeholder="Enter Reference Id"
-                />
-              </Form.Group>
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>Cancel Url</Form.Label>
+                  <Form.Control
+                    type="text"
+                    onChange={handleChange}
+                    name="cancelUrl"
+                    value={data.cancelUrl || ""}
+                    placeholder="Enter Cancel Url"
+                  />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Label>Reference Id</Form.Label>
+                  <Form.Control
+                    type="text"
+                    onChange={handleChange}
+                    name="referenceId"
+                    value={data.referenceId || ""}
+                    placeholder="Enter Reference Id"
+                  />
+                </Form.Group>
+              </Form.Row>
 
               <Row>
                 <Form.Group as={Col} md="6">
@@ -119,6 +130,19 @@ export default ({
                 </Form.Group>
               </Row>
 
+              <Row>
+                <Form.Group as={Col} md="6">
+                  <Form.Label>DVH</Form.Label>
+                  <Form.Control
+                    type="text"
+                    as="textarea"
+                    onChange={handleChange}
+                    name="dateOfRequest"
+                    value={data.dvh || ""}
+                    placeholder="Enter DVH"
+                  />
+                </Form.Group>
+              </Row>
               <Form.Group>
                 <Button
                   variant="danger"
