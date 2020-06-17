@@ -121,13 +121,13 @@ function WebCheckout(props) {
         `${API_BASE}merchant/web-checkout/verify-request`,
         settings
       );
-      const { response, data: successData } = await fetchResponse.json();
+      const { status, message, data: successData } = await fetchResponse.json();
 
-      if (response.status === 200) {
+      if (status === 200) {
         const { token, dvh, ...rest } = successData;
         window.location.replace(successData.webCheckoutUrl);
       } else {
-        alert(response.message);
+        alert(message);
       }
     } catch (e) {
       console.error(e);
@@ -147,9 +147,9 @@ function WebCheckout(props) {
         `${API_BASE}merchant/web-checkout/token`,
         settings
       );
-      const { response, data: successData } = await fetchResponse.json();
+      const { status, message, data: successData } = await fetchResponse.json();
 
-      if (response.status === 200) {
+      if (status === 200) {
         const { token, dvh, ...rest } = successData;
 
         let validData = true;
@@ -164,7 +164,7 @@ function WebCheckout(props) {
           alert("Sent data & received data does not match!");
         }
       } else {
-        alert(response.message);
+        alert(message);
       }
     } catch (e) {
       console.error(e);
