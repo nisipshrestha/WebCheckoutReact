@@ -11,6 +11,18 @@ import {
   Card
 } from "react-bootstrap";
 
+const copyMapper = [
+  {
+    txnId: <b>Transaction Id</b>
+  },
+  { referenceId: <b>Reference Id</b> },
+  { merchantName: <b>Merchant Name</b> },
+  { bankCode: <b>Bank Code</b> },
+  { amount: <b>Amount</b> },
+  { totalAmount: <b>Total Amount</b> },
+  { charge: <b>Charge</b> },
+  { discount: <b>Discount</b> }
+];
 const nameMapper = {
   txnId: "Transaction Id",
   referenceId: "Reference Id",
@@ -21,6 +33,7 @@ const nameMapper = {
   charge: "Charge",
   discount: "Discount"
 };
+
 const verificationNameMapper = { ...nameMapper };
 export default ({
   data,
@@ -51,6 +64,23 @@ export default ({
         </Card.Header>
         <Card.Body>
           <ListGroup variant="flush">
+            {/*  txnId: "Transaction Id",
+  referenceId: "Reference Id",
+  merchantName: "Merchant Name",
+  bankCode: "Bank Code",
+  amount: "Amount",
+  totalAmount: "Total Amount",
+  charge: "Charge",
+  discount: "Discount" */}
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>a</b>
+                </Col>
+                <Col>b</Col>
+              </Row>
+            </ListGroup.Item>
             {Object.keys(data).map(
               x =>
                 verificationNameMapper[x] && (
