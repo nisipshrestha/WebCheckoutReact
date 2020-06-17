@@ -16,6 +16,7 @@ export default ({
   handleGenerateDvh,
   handleMerchantSelection,
   merchantList,
+  selectedMerchant,
   data,
   setData,
   setSubmitType
@@ -66,6 +67,21 @@ export default ({
 
               <Form.Group as={Row}>
                 <Form.Label column sm="4">
+                  Secret Key
+                </Form.Label>
+                <Col sm md lg>
+                  <Form.Control
+                    type="text"
+                    onChange={handleChange}
+                    name="secretKey"
+                    value={selectedMerchant.secretKey || ""}
+                    placeholder="Enter API Key"
+                  />
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row}>
+                <Form.Label column sm="4">
                   Date Of Request
                 </Form.Label>
                 <Col sm md lg>
@@ -83,7 +99,13 @@ export default ({
                   Merchant
                 </Form.Label>
                 <Col sm md lg>
-                  <Form.Control readOnly defaultValue="Web Checkout Merchant" />
+                  <Form.Control
+                    type="text"
+                    onChange={handleChange}
+                    name="name"
+                    value={selectedMerchant.name || ""}
+                    placeholder="Enter Merchant Name"
+                  />
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>

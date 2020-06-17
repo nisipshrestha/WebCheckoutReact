@@ -61,11 +61,14 @@ function WebCheckout(props) {
   useEffect(() => {
     if (responseDvh) {
       const filteredData = removeKeys({ ...data });
-      const result = computeDvh(filteredData);
+      const result = computeDvh(filteredData, selectedMerchantData.secretKey);
 
       if (responseDvh === result) {
         const { dvh: exclude, ...rest } = data;
-        const requestObject = { ...rest, dvh: computeDvh(rest) };
+        const requestObject = {
+          ...rest,
+          dvh: computeDvh(rest, selectedMerchantData.secretKey)
+        };
         setData(rest);
 
         // 2nd API Call
@@ -76,18 +79,18 @@ function WebCheckout(props) {
 
   /* -------------------- FN handleMerchantSelection -------------------- */
   const handleMerchantSelection = param => {
-    console.log(param);
     setMerchantList(
       merchantList.map(x => ({ ...x, active: x.name === param.name }))
     );
-    setData(state => ({ ...state, merchant: param.name }));
+    setSelectedMerchantData({ name: param.name, secretKey: param.secretKey });
+    setData(state => ({ ...state, apiKey: param.apiKey }));
   };
 
   /* -------------------- FN handleGenerateDvh -------------------- */
   const handleGenerateDvh = () => {
     const filteredData = removeKeys({ ...data });
     try {
-      const result = computeDvh(filteredData);
+      const result = computeDvh(filteredData, selectedMerchantData.secretKey);
       setData(state => ({ ...state, dvh: result }));
     } catch (e) {
       console.error(e);
@@ -97,7 +100,17 @@ function WebCheckout(props) {
   /* -------------------- FN handleChange -------------------- */
   const handleChange = e => {
     const { name, value } = e.target;
-    setData(state => ({ ...state, [name]: value }));
+    switch (name) {
+      case "name":
+      case "secretKey": {
+        setSelectedMerchantData(state => ({ ...state, [name]: value }));
+        break;
+      }
+      default: {
+        setData(state => ({ ...state, [name]: value }));
+        break;
+      }
+    }
   };
 
   /* --------------------2nd API Call FN verifyRequest -------------------- */
@@ -177,6 +190,7 @@ function WebCheckout(props) {
       handleGenerateDvh={handleGenerateDvh}
       handleMerchantSelection={handleMerchantSelection}
       merchantList={merchantList}
+      selectedMerchant={selectedMerchantData}
       data={data}
       setData={setData}
       setSubmitType={setSubmitType}

@@ -12,8 +12,10 @@ const removeKeys = param => {
 };
 
 /* -------------------- FN computeDvh -------------------- */
-const computeDvh = filteredData => {
-  const secretKey = "3568f8c73f3349dcbbc99362c130f7c8";
+const computeDvh = (
+  filteredData,
+  secretKey = "3568f8c73f3349dcbbc99362c130f7c8"
+) => {
   const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
     "base64"
   );
