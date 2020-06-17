@@ -12,7 +12,6 @@ const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
 function WebCheckout(props) {
   /* ==================== React Hooks ==================== */
   const [submitType, setSubmitType] = useState("");
-  const [successType, setSuccessType] = useState("");
   const [responseDvh, setResponseDvh] = useState("");
   const [data, setData] = useState({
     apiKey: "3568f8c7-3f33-49dc-bbc9-9362c130f7c8",
@@ -29,33 +28,56 @@ function WebCheckout(props) {
   });
 
   useEffect(() => {
-    if (responseDvh) generateDvh();
-  }, [responseDvh]);
-
-  /* ==================== Functions ==================== */
-  /* -------------------- FN generateDvh -------------------- */
-  const generateDvh = () => {
-    const filteredData = removeKeys({ ...data });
-    try {
+    if (responseDvh) {
+      const filteredData = removeKeys({ ...data });
       const result = computeDvh(filteredData);
-      const tempData = { ...data, dvh: result };
-      if (!responseDvh) {
-        setData(tempData);
 
-        // 1st API Call
-        requestToken(tempData);
-      }
-      //
-      else if (responseDvh && responseDvh === result) {
-        const { dvh: exclude, ...rest } = tempData;
+      if (responseDvh === result) {
+        const { dvh: exclude, ...rest } = data;
         const requestObject = { ...rest, dvh: computeDvh(rest) };
         setData(rest);
 
         // 2nd API Call
         verifyRequest(requestObject);
       }
-    } catch (error) {
-      throw error;
+    }
+  }, [responseDvh]);
+
+  /* ==================== Functions ==================== */
+  // /* -------------------- FN generateDvh -------------------- */
+  // const generateDvh = () => {
+  //   const filteredData = removeKeys({ ...data });
+  //   try {
+  //     const result = computeDvh(filteredData);
+  //     const tempData = { ...data, dvh: result };
+  //     if (!responseDvh) {
+  //       setData(tempData);
+
+  //       // 1st API Call
+  //       requestToken(tempData);
+  //     }
+  //     //
+  //     else if (responseDvh && responseDvh === result) {
+  //       const { dvh: exclude, ...rest } = tempData;
+  //       const requestObject = { ...rest, dvh: computeDvh(rest) };
+  //       setData(rest);
+
+  //       // 2nd API Call
+  //       verifyRequest(requestObject);
+  //     }
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
+
+  /* -------------------- FN handleGenerateDvh -------------------- */
+  const handleGenerateDvh = () => {
+    const filteredData = removeKeys({ ...data });
+    try {
+      const result = computeDvh(filteredData);
+      setData(state => ({ ...state, dvh: result }));
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -65,7 +87,7 @@ function WebCheckout(props) {
     setData(state => ({ ...state, [name]: value }));
   };
 
-  /* -------------------- FN verifyRequest -------------------- */
+  /* --------------------2nd API Call FN verifyRequest -------------------- */
   const verifyRequest = async param => {
     settings.body = JSON.stringify(param);
     try {
@@ -86,7 +108,7 @@ function WebCheckout(props) {
     }
   };
 
-  /* -------------------- FN requestToken -------------------- */
+  /* --------------------1st API Call FN requestToken -------------------- */
   const requestToken = async ({
     returnUrl,
     callbackUrl,
@@ -102,18 +124,18 @@ function WebCheckout(props) {
       const { response, data: successData } = await fetchResponse.json();
 
       if (response.status === 200) {
-        if (!successType) {
-          const { token, dvh, ...rest } = successData;
+        const { token, dvh, ...rest } = successData;
 
-          let validData = true;
-          Object.keys(rest).forEach(x => {
-            validData = validData && rest[x] === data[x];
-          });
-          if (validData) {
-            setData(state => ({ ...state, token }));
-            setResponseDvh(dvh);
-            setSuccessType("initial Success");
-          }
+        let validData = true;
+        Object.keys(rest).forEach(x => {
+          validData = validData && rest[x] === data[x];
+        });
+
+        if (validData) {
+          setData(state => ({ ...state, token }));
+          setResponseDvh(dvh);
+        } else {
+          alert("Sent data & received data does not match!");
         }
       } else {
         alert(response.message);
@@ -127,7 +149,10 @@ function WebCheckout(props) {
   const handleSubmit = e => {
     e.preventDefault();
     if (submitType === "submit") {
-      generateDvh();
+      if (data.dvh) {
+        // 1st API Call
+        requestToken(data);
+      }
     }
   };
 
@@ -135,6 +160,7 @@ function WebCheckout(props) {
     <FormUI
       handleSubmit={handleSubmit}
       handleChange={handleChange}
+      handleGenerateDvh={handleGenerateDvh}
       data={data}
       setData={setData}
       setSubmitType={setSubmitType}

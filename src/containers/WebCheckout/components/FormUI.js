@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 export default ({
   handleSubmit,
   handleChange,
+  handleGenerateDvh,
   data,
   setData,
   setSubmitType
@@ -16,7 +17,7 @@ export default ({
 
       <Container>
         <Row>
-          <Form.Group as={Col} md="6">
+          <Form.Group as={Col} sm="6">
             <Form.Label>API Key</Form.Label>
             <Form.Control
               type="text"
@@ -26,8 +27,18 @@ export default ({
               placeholder="Enter API Key"
             />
           </Form.Group>
-        </Row>
 
+          <Form.Group as={Col}>
+            <Form.Label>Date Of Request</Form.Label>
+            <Form.Control
+              type="date"
+              onChange={handleChange}
+              name="dateOfRequest"
+              value={data.dateOfRequest || ""}
+              placeholder="Enter Date Of Request"
+            />
+          </Form.Group>
+        </Row>
         <Row>
           <Col md="12">
             <Form onSubmit={handleSubmit}>
@@ -36,6 +47,7 @@ export default ({
                   <Form.Label>Merchant</Form.Label>
                   <Form.Control readOnly defaultValue="Web Checkout Merchant" />
                 </Form.Group>
+
                 <Form.Group as={Col}>
                   <Form.Label>Amount</Form.Label>
                   <Form.Control
@@ -118,21 +130,20 @@ export default ({
               </Form.Row>
 
               <Row>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>Date Of Request</Form.Label>
-                  <Form.Control
-                    type="date"
-                    onChange={handleChange}
-                    name="dateOfRequest"
-                    value={data.dateOfRequest || ""}
-                    placeholder="Enter Date Of Request"
-                  />
+                <Form.Group as={Col}>
+                  <Button
+                    variant="success"
+                    type="button"
+                    name="generateDVH"
+                    onClick={handleGenerateDvh}
+                  >
+                    Generate DVH
+                  </Button>
                 </Form.Group>
               </Row>
 
               <Row>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>DVH</Form.Label>
+                <Form.Group as={Col}>
                   <Form.Control
                     type="text"
                     as="textarea"
@@ -143,6 +154,7 @@ export default ({
                   />
                 </Form.Group>
               </Row>
+
               <Form.Group>
                 <Button
                   variant="danger"
@@ -153,6 +165,7 @@ export default ({
                   Reset
                 </Button>{" "}
                 <Button
+                  disabled={!data.dvh}
                   variant="primary"
                   type="submit"
                   name="submit"
