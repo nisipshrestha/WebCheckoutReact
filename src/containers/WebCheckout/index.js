@@ -147,10 +147,10 @@ function WebCheckout(props) {
         `${API_BASE}merchant/web-checkout/token`,
         settings
       );
-      const { status, message, data: successData } = await fetchResponse.json();
-
-      if (status === 200) {
-        const { token, dvh, ...rest } = successData;
+      // const { status, message, data: successData } = await fetchResponse.json();
+      const response = await fetchResponse.json();
+      if (response.status === 200) {
+        const { token, dvh, ...rest } = response.data || {};
 
         let validData = true;
         Object.keys(rest).forEach(x => {
@@ -164,7 +164,7 @@ function WebCheckout(props) {
           alert("Sent data & received data does not match!");
         }
       } else {
-        alert(message);
+        alert(response.message || response.response.message);
       }
     } catch (e) {
       console.error(e);
