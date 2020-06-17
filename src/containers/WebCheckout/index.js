@@ -121,13 +121,12 @@ function WebCheckout(props) {
         `${API_BASE}merchant/web-checkout/verify-request`,
         settings
       );
-      const { status, message, data: successData } = await fetchResponse.json();
-
-      if (status === 200) {
+      const { response, data: successData } = await fetchResponse.json();
+      if (response.status === 200) {
         const { token, dvh, ...rest } = successData;
         window.location.replace(successData.webCheckoutUrl);
       } else {
-        alert(message);
+        alert(response.message);
       }
     } catch (e) {
       console.error(e);
@@ -148,10 +147,9 @@ function WebCheckout(props) {
         settings
       );
       // const { status, message, data: successData } = await fetchResponse.json();
-      const response = await fetchResponse.json();
-      if (response.status === 200) {
-        const { token, dvh, ...rest } = response.data || {};
-
+      const { response, data: successData } = await fetchResponse.json();
+      if (response.status && response.status === 200) {
+        const { token, dvh, ...rest } = successData;
         let validData = true;
         Object.keys(rest).forEach(x => {
           validData = validData && rest[x] === data[x];
