@@ -11,18 +11,6 @@ import {
   Card
 } from "react-bootstrap";
 
-const copyMapper = [
-  {
-    txnId: <b>Transaction Id</b>
-  },
-  { referenceId: <b>Reference Id</b> },
-  { merchantName: <b>Merchant Name</b> },
-  { bankCode: <b>Bank Code</b> },
-  { amount: <b>Amount</b> },
-  { totalAmount: <b>Total Amount</b> },
-  { charge: <b>Charge</b> },
-  { discount: <b>Discount</b> }
-];
 const nameMapper = {
   txnId: "Transaction Id",
   referenceId: "Reference Id",
@@ -64,36 +52,77 @@ export default ({
         </Card.Header>
         <Card.Body>
           <ListGroup variant="flush">
-            {/*  txnId: "Transaction Id",
-  referenceId: "Reference Id",
-  merchantName: "Merchant Name",
-  bankCode: "Bank Code",
-  amount: "Amount",
-  totalAmount: "Total Amount",
-  charge: "Charge",
-  discount: "Discount" */}
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Transaction Id</b>
+                </Col>
+                <Col>{data.txnId || ""}</Col>
+              </Row>
+            </ListGroup.Item>
 
             <ListGroup.Item>
               <Row>
                 <Col>
-                  <b>a</b>
+                  <b>Reference Id</b>
                 </Col>
-                <Col>b</Col>
+                <Col>{data.referenceId || ""}</Col>
               </Row>
             </ListGroup.Item>
-            {Object.keys(data).map(
-              x =>
-                verificationNameMapper[x] && (
-                  <ListGroup.Item key={x}>
-                    <Row>
-                      <Col>
-                        <b>{nameMapper[x]}</b>
-                      </Col>
-                      <Col>{data[x]}</Col>
-                    </Row>
-                  </ListGroup.Item>
-                )
-            )}
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Merchant Name</b>
+                </Col>
+                <Col>{data.merchantName || ""}</Col>
+              </Row>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Bank Code</b>
+                </Col>
+                <Col>{data.bankCode || ""}</Col>
+              </Row>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Amount</b>
+                </Col>
+                <Col>{data.amount || ""}</Col>
+              </Row>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Total Amount</b>
+                </Col>
+                <Col>{data.totalAmount || ""}</Col>
+              </Row>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Charge</b>
+                </Col>
+                <Col>{data.charge || ""}</Col>
+              </Row>
+            </ListGroup.Item>
+
+            <ListGroup.Item>
+              <Row>
+                <Col>
+                  <b>Discount</b>
+                </Col>
+                <Col>{data.discount || ""}</Col>
+              </Row>
+            </ListGroup.Item>
           </ListGroup>
         </Card.Body>
       </Card>
@@ -120,19 +149,77 @@ export default ({
           </Card.Header>
           <Card.Body>
             <ListGroup variant="flush">
-              {Object.keys(verifiedData).map(
-                x =>
-                  nameMapper[x] && (
-                    <ListGroup.Item key={x}>
-                      <Row>
-                        <Col>
-                          <b>{nameMapper[x]}</b>
-                        </Col>
-                        <Col>{verifiedData[x]}</Col>
-                      </Row>
-                    </ListGroup.Item>
-                  )
-              )}
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Transaction Id</b>
+                  </Col>
+                  <Col>{verifiedData.txnId || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Reference Id</b>
+                  </Col>
+                  <Col>{verifiedData.referenceId || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Merchant Name</b>
+                  </Col>
+                  <Col>{verifiedData.merchantName || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Bank Code</b>
+                  </Col>
+                  <Col>{verifiedData.bankCode || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Amount</b>
+                  </Col>
+                  <Col>{verifiedData.amount || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Total Amount</b>
+                  </Col>
+                  <Col>{verifiedData.totalAmount || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Charge</b>
+                  </Col>
+                  <Col>{verifiedData.charge || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Discount</b>
+                  </Col>
+                  <Col>{verifiedData.discount || "" || ""}</Col>
+                </Row>
+              </ListGroup.Item>
             </ListGroup>
           </Card.Body>
         </Card>
