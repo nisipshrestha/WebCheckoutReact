@@ -37,6 +37,7 @@ const RedirectPage = () => {
         );
         const { response, data: successData } = await fetchResponse.json();
         if (response.status === 200) {
+          console.log(successData);
           setIsVerified(true);
           setVerifiedData(successData);
         } else {
