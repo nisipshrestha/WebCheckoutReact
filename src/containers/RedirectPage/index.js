@@ -6,12 +6,11 @@ import {
   removeKeys,
   getParameterByName,
   dataExtractor,
-  apiSettings as settings
+  apiSettings as settings,
+  API_BASE
 } from "../commonHelper";
 import FailurePage from "./FailurePage";
 import SuccessPage from "./components/SuccessForm";
-
-const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
 
 const RedirectPage = () => {
   const [toDisplay, setToDisplay] = useState(null);

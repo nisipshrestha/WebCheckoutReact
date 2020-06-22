@@ -10,6 +10,7 @@ import {
   ListGroup
 } from "react-bootstrap";
 
+import EnvironmentSelector from "./EnvironmentSelector";
 export default ({
   handleSubmit,
   handleChange,
@@ -18,6 +19,7 @@ export default ({
   merchantList,
   selectedMerchant,
   data,
+  env,
   setData,
   setSubmitType
 }) => {
@@ -26,6 +28,7 @@ export default ({
       <div className="text-center">
         <h1 className="display-4">Web Checkout</h1>
       </div>
+      <EnvironmentSelector handleChange={handleChange} data={env} />
 
       <CardGroup>
         <Card>

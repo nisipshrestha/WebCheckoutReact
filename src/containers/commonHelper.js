@@ -58,10 +58,24 @@ const apiSettings = {
   }
 };
 
+/* -------------------- CONST apiSettings -------------------- */
+const environmentMapper = {
+  Development: "bfi-merchant.bitsbeat.com/",
+  Testing: "bfi-dev-merchant.ospsb.com/",
+  Demo: "bfi-demo-merchant.ospsb.com/"
+};
+
+const apiBaseSetter = env =>
+  `https://${environmentMapper[env || "Development"]}api/v1/`;
+
+const API_BASE = apiBaseSetter(localStorage.getItem("env"));
+
 export {
   removeKeys,
   computeDvh,
   apiSettings,
   getParameterByName,
-  dataExtractor
+  dataExtractor,
+  API_BASE,
+  apiBaseSetter
 };

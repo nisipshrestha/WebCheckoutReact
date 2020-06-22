@@ -4,28 +4,29 @@ import { withRouter } from "react-router-dom";
 import {
   computeDvh,
   removeKeys,
-  apiSettings as settings
+  apiSettings as settings,
+  apiBaseSetter
 } from "../commonHelper";
 
-const API_BASE = "https://bfi-merchant.bitsbeat.com/api/v1/";
-
+const initialData = {
+  apiKey: "3568f8c7-3f33-49dc-bbc9-9362c130f7c8",
+  amount: 100.5,
+  currency: "NPR",
+  bankCode: "GIBL",
+  referenceId: `pr${Date.now()}`,
+  // referenceId: ``,
+  dvh: "",
+  dateOfRequest: new Date().toLocaleDateString("fr-CA"),
+  returnUrl: `${window.location.href}redirectPage`,
+  callbackUrl: "www.callback.com",
+  cancelUrl: window.location.href
+};
 function WebCheckout(props) {
   /* ==================== React Hooks ==================== */
   const [submitType, setSubmitType] = useState("");
   const [responseDvh, setResponseDvh] = useState("");
-  const [data, setData] = useState({
-    apiKey: "3568f8c7-3f33-49dc-bbc9-9362c130f7c8",
-    amount: 100.5,
-    currency: "NPR",
-    bankCode: "GIBL",
-    referenceId: `pr${Date.now()}`,
-    // referenceId: ``,
-    dvh: "",
-    dateOfRequest: new Date().toLocaleDateString("fr-CA"),
-    returnUrl: `${window.location.href}redirectPage`,
-    callbackUrl: "www.callback.com",
-    cancelUrl: window.location.href
-  });
+  const [data, setData] = useState(initialData);
+  const [env, setEnv] = useState(localStorage.getItem("env") || "Development");
 
   const [merchantList, setMerchantList] = useState([
     {
@@ -50,7 +51,6 @@ function WebCheckout(props) {
     name: "",
     secretKey: ""
   });
-
   useEffect(() => {
     const { name, secretKey } = merchantList.find(x => x.active) || {};
     if (name && secretKey) {
@@ -106,6 +106,12 @@ function WebCheckout(props) {
         setSelectedMerchantData(state => ({ ...state, [name]: value }));
         break;
       }
+      case "environment": {
+        if (value);
+        setEnv(value);
+        localStorage.setItem("env", value);
+        break;
+      }
       default: {
         setData(state => ({ ...state, [name]: value }));
         break;
@@ -118,7 +124,7 @@ function WebCheckout(props) {
     settings.body = JSON.stringify(param);
     try {
       const fetchResponse = await fetch(
-        `${API_BASE}merchant/web-checkout/verify-request`,
+        `${apiBaseSetter(env)}merchant/web-checkout/verify-request`,
         settings
       );
       const { response, data: successData } = await fetchResponse.json();
@@ -143,7 +149,7 @@ function WebCheckout(props) {
     settings.body = JSON.stringify(rest);
     try {
       const fetchResponse = await fetch(
-        `${API_BASE}merchant/web-checkout/token`,
+        `${apiBaseSetter(env)}merchant/web-checkout/token`,
         settings
       );
       // const { status, message, data: successData } = await fetchResponse.json();
@@ -189,6 +195,7 @@ function WebCheckout(props) {
       merchantList={merchantList}
       selectedMerchant={selectedMerchantData}
       data={data}
+      env={env}
       setData={setData}
       setSubmitType={setSubmitType}
     />
