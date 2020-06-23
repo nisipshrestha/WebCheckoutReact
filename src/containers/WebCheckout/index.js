@@ -30,22 +30,31 @@ function WebCheckout(props) {
 
   const [merchantList, setMerchantList] = useState([
     {
-      name: "Web Checkout",
+      name: "Web Checkout - Development",
       apiKey: "3568f8c7-3f33-49dc-bbc9-9362c130f7c8",
       secretKey: "3568f8c73f3349dcbbc99362c130f7c8",
       active: true
     },
     {
-      name: "Western Tandoori",
+      name: "Western Tandoori - Development",
       apiKey: "619cda33-b3e9-43ee-a938-c62a044fb7f2",
       secretKey: "cbac3523560c4f0580a29441481d785d"
     },
     {
-      name: "Delicious Momo",
+      name: "Delicious Momo - Development",
       apiKey: "e8c961a9-3268-4ed7-939f-943835402173",
       secretKey: "a723551b1b004d60b43d36534d5f61bf"
+    },
+    {
+      name: "Web Checkout - Testing",
+      apiKey: "9c139d2a-0172-4e98-82f2-f4bb6d79e771",
+      secretKey: "1af9450b30b942a888859be131345c18"
     }
   ]);
+
+  /* 
+  | WC1234WBCHK | 9c139d2a-0172-4e98-82f2-f4bb6d79e771 | 1af9450b30b942a888859be131345c18 |
+   */
 
   const [selectedMerchantData, setSelectedMerchantData] = useState({
     name: "",
