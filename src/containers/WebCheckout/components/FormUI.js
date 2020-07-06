@@ -117,10 +117,10 @@ export default ({
                 </Form.Label>
                 <Col sm md lg>
                   <Form.Control
-                    type="text"
+                    type="number"
                     onChange={handleChange}
                     name="amount"
-                    value={data.amount || ""}
+                    value={data.amount || 0}
                     placeholder="Enter Amount"
                   />
                 </Col>

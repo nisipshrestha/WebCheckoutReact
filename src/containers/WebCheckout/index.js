@@ -115,16 +115,17 @@ function WebCheckout(props) {
         setSelectedMerchantData(state => ({ ...state, [name]: value }));
         break;
       }
-      case "amount": {
-        setSelectedMerchantData(state => ({ ...state, [name]: +value }));
-        break;
-      }
       case "environment": {
         if (value);
         setEnv(value);
         localStorage.setItem("env", value);
         break;
       }
+      case "amount": {
+        setData(state => ({ ...state, [name]: parseFloat(value) }));
+        break;
+      }
+
       default: {
         setData(state => ({ ...state, [name]: value }));
         break;
