@@ -49,12 +49,13 @@ function WebCheckout(props) {
       name: "Web Checkout - Testing",
       apiKey: "9c139d2a-0172-4e98-82f2-f4bb6d79e771",
       secretKey: "1af9450b30b942a888859be131345c18"
+    },
+    {
+      name: "Web Checkout - Demo",
+      apiKey: "a276f6ea-fb28-4e89-ae88-25394d7de72e",
+      secretKey: "5f8907d7b9b04a44956e8e079a362c68 "
     }
   ]);
-
-  /* 
-  | WC1234WBCHK | 9c139d2a-0172-4e98-82f2-f4bb6d79e771 | 1af9450b30b942a888859be131345c18 |
-   */
 
   const [selectedMerchantData, setSelectedMerchantData] = useState({
     name: "",
