@@ -32,6 +32,14 @@ const EnvironmentSelector = ({ data, handleChange }) => {
               onChange={handleChange}
               name="environment"
             />
+            <Form.Check
+              type="radio"
+              label="POC"
+              value="Poc"
+              checked={data === "Poc"}
+              onChange={handleChange}
+              name="environment"
+            />
           </Col>
         </Row>
       </Form.Group>

@@ -54,6 +54,11 @@ function WebCheckout(props) {
       name: "Web Checkout - Demo",
       apiKey: "a276f6ea-fb28-4e89-ae88-25394d7de72e",
       secretKey: "5f8907d7b9b04a44956e8e079a362c68 "
+    },
+    {
+      name: "Web Checkout - POC",
+      apiKey: "128d26ed-4c85-4327-b439-82bbd5b2cdb8",
+      secretKey: "0e2a029569cd4347940346a0ac4a480e"
     }
   ]);
 
