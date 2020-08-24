@@ -147,8 +147,9 @@ function WebCheckout(props) {
         `${apiBaseSetter(env)}merchant/web-checkout/verify-request`,
         settings
       );
-      const { response, data: successData } = await fetchResponse.json();
-      if (response.status === 200) {
+      const { response = {}, data: successData } = await fetchResponse.json();
+      if (response.status && response.status === 200) {
+        console.log(response);
         const { token, dvh, ...rest } = successData;
         window.location.replace(successData.webCheckoutUrl);
       } else {
@@ -173,7 +174,7 @@ function WebCheckout(props) {
         settings
       );
       // const { status, message, data: successData } = await fetchResponse.json();
-      const { response, data: successData } = await fetchResponse.json();
+      const { response = {}, data: successData } = await fetchResponse.json();
       if (response.status && response.status === 200) {
         const { token, dvh, ...rest } = successData;
         let validData = true;
