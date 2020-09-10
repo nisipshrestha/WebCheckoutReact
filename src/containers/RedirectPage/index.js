@@ -54,24 +54,26 @@ const RedirectPage = () => {
     });
   };
 
-  const { txnStatus } = transactionDetail || {};
+  const { txnStatus = "" } = transactionDetail || {};
+
+  const displayComponent = {
+    "00": (
+      <SuccessPage
+        isVerified={isVerified}
+        data={transactionDetail}
+        title={"Success"}
+        handleVerify={handleVerify}
+        verifiedData={verifiedData}
+      />
+    ),
+    "01": <FailurePage title={"Transaction Failed"} />,
+    "03": <FailurePage title={"Transaction Failed"} />
+  };
   return (
     <Container>
-      {(!txnStatus && <h1 className="display-4">NOTHING TO DISPLAY</h1>) ||
-        (txnStatus === "00" &&
-          ((
-            <SuccessPage
-              isVerified={isVerified}
-              data={transactionDetail}
-              title={"Success"}
-              handleVerify={handleVerify}
-              verifiedData={verifiedData}
-            />
-          ) ||
-            txnStatus === "01" ||
-            (txnStatus === "03" && (
-              <FailurePage title={"Transaction Failed"} />
-            ))))}
+      {displayComponent[txnStatus] || (
+        <h1 className="display-4">NOTHING TO DISPLAY</h1>
+      )}
     </Container>
   );
 };
