@@ -1,24 +1,26 @@
 import CryptoJS from "crypto-js";
 
 /* -------------------- FN removeKeys -------------------- */
-const removeKeys = param => {
-  delete param.returnUrl;
-  delete param.callbackUrl;
-  delete param.cancelUrl;
-  delete param.dvh;
-  delete param.metaData;
-  delete param.context;
-  return param;
+const removeKeys = ({
+  returnUrl,
+  callbackUrl,
+  cancelUrl,
+  dvh,
+  metaData,
+  context,
+  ...rest
+} = {}) => {
+  return rest;
 };
 
 /* -------------------- FN computeDvh -------------------- */
-const computeDvh = (
-  filteredData,
-  secretKey = "3568f8c73f3349dcbbc99362c130f7c8"
-) => {
-  const dvhString = Buffer.from(JSON.stringify(filteredData)).toString(
-    "base64"
+const computeDvh = (data, secretKey = "3568f8c73f3349dcbbc99362c130f7c8") => {
+  const sortedData = Object.fromEntries(
+    Object.entries(data).sort(([a], [b]) =>
+      a.toLowerCase().localeCompare(b.toLowerCase())
+    )
   );
+  const dvhString = Buffer.from(JSON.stringify(sortedData)).toString("base64");
   const hash = CryptoJS.HmacSHA512(dvhString, secretKey);
   return CryptoJS.enc.Hex.stringify(hash);
 };

@@ -27,8 +27,9 @@ const RedirectPage = () => {
     const { dvh, ...rest } = transactionDetail;
     const { apiKey, referenceId, token, totalAmount } = rest;
 
-    (async param => {
-      settings.body = JSON.stringify(param);
+    (async ({ dvh, ...rest }) => {
+      settings.headers = { dvh };
+      settings.body = JSON.stringify(rest);
       try {
         const fetchResponse = await fetch(
           `${API_BASE}merchant/web-checkout/verify-transaction`,

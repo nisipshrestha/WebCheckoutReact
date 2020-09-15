@@ -140,8 +140,9 @@ function WebCheckout(props) {
   };
 
   /* --------------------2nd API Call FN verifyRequest -------------------- */
-  const verifyRequest = async param => {
-    settings.body = JSON.stringify(param);
+  const verifyRequest = async ({ dvh, ...rest }) => {
+    settings.body = JSON.stringify(rest);
+    settings.headers = { dvh };
     try {
       const fetchResponse = await fetch(
         `${apiBaseSetter(env)}merchant/web-checkout/verify-request`,
@@ -149,7 +150,6 @@ function WebCheckout(props) {
       );
       const { response = {}, data: successData } = await fetchResponse.json();
       if (response.status && response.status === 200) {
-        console.log(response);
         const { token, dvh, ...rest } = successData;
         window.location.replace(successData.webCheckoutUrl);
       } else {
@@ -165,9 +165,12 @@ function WebCheckout(props) {
     returnUrl,
     callbackUrl,
     cancelUrl,
+    dvh,
     ...rest
   }) => {
+    settings.headers = { dvh };
     settings.body = JSON.stringify(rest);
+
     try {
       const fetchResponse = await fetch(
         `${apiBaseSetter(env)}merchant/web-checkout/token`,
@@ -186,7 +189,7 @@ function WebCheckout(props) {
           setData(state => ({ ...state, token }));
           setResponseDvh(dvh);
         } else {
-          alert("Sent data & received data does not match!");
+          alert("Sent data does not match with received data!");
         }
       } else {
         alert(response.message || response.response.message);
