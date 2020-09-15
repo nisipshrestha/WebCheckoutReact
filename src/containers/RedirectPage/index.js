@@ -28,7 +28,7 @@ const RedirectPage = () => {
     const { apiKey, referenceId, token, totalAmount } = rest;
 
     (async ({ dvh, ...rest }) => {
-      settings.headers = { dvh };
+      settings.headers = { dvh, "content-type": "application/json" };
       settings.body = JSON.stringify(rest);
       try {
         const fetchResponse = await fetch(

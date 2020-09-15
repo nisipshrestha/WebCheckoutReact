@@ -1,16 +1,14 @@
 import CryptoJS from "crypto-js";
 
 /* -------------------- FN removeKeys -------------------- */
-const removeKeys = ({
-  returnUrl,
-  callbackUrl,
-  cancelUrl,
-  dvh,
-  metaData,
-  context,
-  ...rest
-} = {}) => {
-  return rest;
+const removeKeys = param => {
+  delete param.returnUrl;
+  delete param.callbackUrl;
+  delete param.cancelUrl;
+  delete param.dvh;
+  delete param.metaData;
+  delete param.context;
+  return param;
 };
 
 /* -------------------- FN computeDvh -------------------- */

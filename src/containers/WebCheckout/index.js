@@ -142,7 +142,7 @@ function WebCheckout(props) {
   /* --------------------2nd API Call FN verifyRequest -------------------- */
   const verifyRequest = async ({ dvh, ...rest }) => {
     settings.body = JSON.stringify(rest);
-    settings.headers = { dvh };
+    settings.headers = { dvh, "content-type": "application/json" };
     try {
       const fetchResponse = await fetch(
         `${apiBaseSetter(env)}merchant/web-checkout/verify-request`,
@@ -168,7 +168,7 @@ function WebCheckout(props) {
     dvh,
     ...rest
   }) => {
-    settings.headers = { dvh };
+    settings.headers = { dvh, "content-type": "application/json" };
     settings.body = JSON.stringify(rest);
 
     try {
