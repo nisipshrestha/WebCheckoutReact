@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, Row, Col, Container, Form } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Form, Row, Col, Container, Form } from 'react-bootstrap';
 
 const EnvironmentSelector = ({ data, handleChange }) => {
   return (
@@ -12,7 +12,7 @@ const EnvironmentSelector = ({ data, handleChange }) => {
               type="radio"
               label="Development"
               value="Development"
-              checked={data === "Development"}
+              checked={data === 'Development'}
               onChange={handleChange}
               name="environment"
             />
@@ -20,7 +20,7 @@ const EnvironmentSelector = ({ data, handleChange }) => {
               type="radio"
               label="Testing"
               value="Testing"
-              checked={data === "Testing"}
+              checked={data === 'Testing'}
               onChange={handleChange}
               name="environment"
             />
@@ -28,7 +28,7 @@ const EnvironmentSelector = ({ data, handleChange }) => {
               type="radio"
               label="Demo / Staging"
               value="Demo"
-              checked={data === "Demo"}
+              checked={data === 'Demo'}
               onChange={handleChange}
               name="environment"
             />
@@ -36,7 +36,15 @@ const EnvironmentSelector = ({ data, handleChange }) => {
               type="radio"
               label="POC"
               value="Poc"
-              checked={data === "Poc"}
+              checked={data === 'Poc'}
+              onChange={handleChange}
+              name="environment"
+            />
+            <Form.Check
+              type="radio"
+              label="VAPT"
+              value="Vapt"
+              checked={data === 'Vapt'}
               onChange={handleChange}
               name="environment"
             />

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Row,
@@ -8,9 +8,9 @@ import {
   Card,
   CardGroup,
   ListGroup
-} from "react-bootstrap";
+} from 'react-bootstrap';
 
-import EnvironmentSelector from "./EnvironmentSelector";
+import EnvironmentSelector from './EnvironmentSelector';
 export default ({
   handleSubmit,
   handleChange,
@@ -41,7 +41,7 @@ export default ({
                   as="li"
                   active={x.active}
                   onClick={e => handleMerchantSelection({ ...x })}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 >
                   {x.name}
                 </ListGroup.Item>
@@ -62,7 +62,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="apiKey"
-                    value={data.apiKey || ""}
+                    value={data.apiKey || ''}
                     placeholder="Enter API Key"
                   />
                 </Col>
@@ -77,7 +77,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="secretKey"
-                    value={selectedMerchant.secretKey || ""}
+                    value={selectedMerchant.secretKey || ''}
                     placeholder="Enter API Key"
                   />
                 </Col>
@@ -92,7 +92,7 @@ export default ({
                     type="date"
                     onChange={handleChange}
                     name="dateOfRequest"
-                    value={data.dateOfRequest || ""}
+                    value={data.dateOfRequest || ''}
                     placeholder="Enter Date Of Request"
                   />
                 </Col>
@@ -106,7 +106,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="name"
-                    value={selectedMerchant.name || ""}
+                    value={selectedMerchant.name || ''}
                     placeholder="Enter Merchant Name"
                   />
                 </Col>
@@ -135,7 +135,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="currency"
-                    value={data.currency || ""}
+                    value={data.currency || ''}
                     placeholder="Enter Currency"
                   />
                 </Col>
@@ -149,7 +149,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="bankCode"
-                    value={data.bankCode || ""}
+                    value={data.bankCode || ''}
                     placeholder="Enter Bank Code"
                   />
                 </Col>
@@ -163,7 +163,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="returnUrl"
-                    value={data.returnUrl || ""}
+                    value={data.returnUrl || ''}
                     placeholder="Enter Return Url"
                   />
                 </Col>
@@ -177,7 +177,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="callbackUrl"
-                    value={data.callbackUrl || ""}
+                    value={data.callbackUrl || ''}
                     placeholder="Enter Callback Url"
                   />
                 </Col>
@@ -191,7 +191,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="cancelUrl"
-                    value={data.cancelUrl || ""}
+                    value={data.cancelUrl || ''}
                     placeholder="Enter Cancel Url"
                   />
                 </Col>
@@ -206,7 +206,7 @@ export default ({
                     type="text"
                     onChange={handleChange}
                     name="referenceId"
-                    value={data.referenceId || ""}
+                    value={data.referenceId || ''}
                     placeholder="Enter Reference Id"
                   />
                 </Col>
@@ -229,7 +229,7 @@ export default ({
                     rows="4"
                     onChange={handleChange}
                     name="dvh"
-                    value={data.dvh || ""}
+                    value={data.dvh || ''}
                     placeholder="Enter DVH"
                   />
                 </Col>
@@ -243,7 +243,7 @@ export default ({
                   onClick={() => setData({})}
                 >
                   Reset
-                </Button>{" "}
+                </Button>{' '}
                 <Button
                   disabled={!data.dvh}
                   variant="primary"
