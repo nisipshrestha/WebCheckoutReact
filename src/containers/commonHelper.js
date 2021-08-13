@@ -64,7 +64,7 @@ const environmentMapper = {
   Testing: 'bfi-dev-merchant.ospsb.com/',
   Demo: 'bfi-demo-merchant.ospsb.com/',
   Poc: 'poc-merchant.ospsb.com/',
-  Vapt: 'https://bfirh-merchant.ospsb.com/'
+  Vapt: 'bfirh-merchant.ospsb.com/'
 };
 
 const apiBaseSetter = env =>
