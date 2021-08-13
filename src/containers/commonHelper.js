@@ -67,6 +67,14 @@ const environmentMapper = {
   Vapt: 'bfirh-merchant.ospsb.com/'
 };
 
+const environmentSelectorList = [
+  { label: 'Development', value: 'Development' },
+  { label: 'Testing', value: 'Testing' },
+  { label: 'Demo / Staging', value: 'Demo' },
+  { label: 'POC', value: 'Poc' },
+  { label: 'VAPT', value: 'Vapt' }
+];
+
 const apiBaseSetter = env =>
   `https://${environmentMapper[env || 'Development']}api/v1/`;
 
@@ -79,5 +87,6 @@ export {
   getParameterByName,
   dataExtractor,
   API_BASE,
-  apiBaseSetter
+  apiBaseSetter,
+  environmentSelectorList
 };

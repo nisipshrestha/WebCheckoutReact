@@ -40,6 +40,7 @@ export default ({
                   key={`${i + 1}`}
                   as="li"
                   active={x.active}
+                  disabled={x.env !== env}
                   onClick={e => handleMerchantSelection({ ...x })}
                   style={{ cursor: 'pointer' }}
                 >
