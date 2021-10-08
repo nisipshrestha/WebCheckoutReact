@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 
 /* -------------------- FN removeKeys -------------------- */
-const removeKeys = param => {
+const removeKeys = (param) => {
   delete param.returnUrl;
   delete param.callbackUrl;
   delete param.cancelUrl;
@@ -36,7 +36,7 @@ const getParameterByName = (name, url) => {
 };
 
 /* -------------------- FN dataExtractor -------------------- */
-const dataExtractor = extractedData => {
+const dataExtractor = (extractedData) => {
   try {
     let transactionDetail = JSON.parse(
       Buffer.from(extractedData, 'base64').toString('ascii')
@@ -54,17 +54,17 @@ const apiSettings = {
   method: 'POST',
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 };
 
 /* -------------------- CONST apiSettings -------------------- */
 const environmentMapper = {
-  Development: 'bfi-merchant.bitsbeat.com/',
+  Development: 'bfi-merchant.ospsb.com/',
   Testing: 'bfi-dev-merchant.ospsb.com/',
   Demo: 'bfi-demo-merchant.ospsb.com/',
   Poc: 'poc-merchant.ospsb.com/',
-  Vapt: 'bfirh-merchant.ospsb.com/'
+  Vapt: 'bfirh-merchant.ospsb.com/',
 };
 
 const environmentSelectorList = [
@@ -72,10 +72,10 @@ const environmentSelectorList = [
   { label: 'Testing', value: 'Testing' },
   { label: 'Demo / Staging', value: 'Demo' },
   { label: 'POC', value: 'Poc' },
-  { label: 'VAPT', value: 'Vapt' }
+  { label: 'VAPT', value: 'Vapt' },
 ];
 
-const apiBaseSetter = env =>
+const apiBaseSetter = (env) =>
   `https://${environmentMapper[env || 'Development']}api/v1/`;
 
 const API_BASE = apiBaseSetter(localStorage.getItem('env'));
@@ -88,5 +88,5 @@ export {
   dataExtractor,
   API_BASE,
   apiBaseSetter,
-  environmentSelectorList
+  environmentSelectorList,
 };

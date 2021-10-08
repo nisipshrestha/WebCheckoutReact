@@ -5,7 +5,7 @@ import {
   computeDvh,
   removeKeys,
   apiSettings as settings,
-  apiBaseSetter
+  apiBaseSetter,
 } from '../commonHelper';
 import MerchantList from '../MerchantList';
 const initialData = {
@@ -18,8 +18,8 @@ const initialData = {
   dvh: '',
   dateOfRequest: new Date().toLocaleDateString('fr-CA'),
   returnUrl: `${window.location.href}redirectPage`,
-  callbackUrl: 'www.callback.com',
-  cancelUrl: window.location.href
+  callbackUrl: 'http://www.callback.com',
+  cancelUrl: window.location.href,
 };
 function WebCheckout(props) {
   /* ==================== React Hooks ==================== */
@@ -32,11 +32,10 @@ function WebCheckout(props) {
 
   const [selectedMerchantData, setSelectedMerchantData] = useState({
     name: '',
-    secretKey: ''
+    secretKey: '',
   });
   useEffect(() => {
-    const { name, secretKey } = merchantList.find(x => x.env === env) || {};
-    console.log([name, secretKey, env]);
+    const { name, secretKey } = merchantList.find((x) => x.env === env) || {};
     if (name && secretKey) {
       setSelectedMerchantData({ name, secretKey, active: true });
     }
@@ -51,7 +50,7 @@ function WebCheckout(props) {
         const { dvh: exclude, ...rest } = data;
         const requestObject = {
           ...rest,
-          dvh: computeDvh(rest, selectedMerchantData.secretKey)
+          dvh: computeDvh(rest, selectedMerchantData.secretKey),
         };
         setData(rest);
 
@@ -62,12 +61,12 @@ function WebCheckout(props) {
   }, [responseDvh]);
 
   /* -------------------- FN handleMerchantSelection -------------------- */
-  const handleMerchantSelection = param => {
+  const handleMerchantSelection = (param) => {
     setMerchantList(
-      merchantList.map(x => ({ ...x, active: x.name === param.name }))
+      merchantList.map((x) => ({ ...x, active: x.name === param.name }))
     );
     setSelectedMerchantData({ name: param.name, secretKey: param.secretKey });
-    setData(state => ({ ...state, apiKey: param.apiKey }));
+    setData((state) => ({ ...state, apiKey: param.apiKey }));
   };
 
   /* -------------------- FN handleGenerateDvh -------------------- */
@@ -75,37 +74,37 @@ function WebCheckout(props) {
     const filteredData = removeKeys({ ...data });
     try {
       const result = computeDvh(filteredData, selectedMerchantData.secretKey);
-      setData(state => ({ ...state, dvh: result }));
+      setData((state) => ({ ...state, dvh: result }));
     } catch (e) {
       console.error(e);
     }
   };
 
   /* -------------------- FN handleChange -------------------- */
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     switch (name) {
       case 'name':
       case 'secretKey': {
-        setSelectedMerchantData(state => ({ ...state, [name]: value }));
+        setSelectedMerchantData((state) => ({ ...state, [name]: value }));
         break;
       }
       case 'environment': {
         if (value) {
           setEnv(value);
           localStorage.setItem('env', value);
-          const tempMerchant = merchantList.find(x => x.env === value);
+          const tempMerchant = merchantList.find((x) => x.env === value);
           handleMerchantSelection(tempMerchant);
         }
         break;
       }
       case 'amount': {
-        setData(state => ({ ...state, [name]: parseFloat(value) }));
+        setData((state) => ({ ...state, [name]: parseFloat(value) }));
         break;
       }
 
       default: {
-        setData(state => ({ ...state, [name]: value }));
+        setData((state) => ({ ...state, [name]: value }));
         break;
       }
     }
@@ -121,9 +120,9 @@ function WebCheckout(props) {
         settings
       );
       const { response = {}, data: successData } = await fetchResponse.json();
-      if (response.status && response.status === 200) {
-        const { token, dvh, ...rest } = successData;
-        window.location.replace(successData.webCheckoutUrl);
+      if (response?.status === 200) {
+        const { webCheckoutUrl } = successData;
+        window.location.replace(webCheckoutUrl);
       } else {
         alert(response.message);
       }
@@ -154,12 +153,12 @@ function WebCheckout(props) {
       if (response.status && response.status === 200) {
         const { token, dvh, ...rest } = successData;
         let validData = true;
-        Object.keys(rest).forEach(x => {
+        Object.keys(rest).forEach((x) => {
           validData = validData && rest[x] === data[x];
         });
 
         if (validData) {
-          setData(state => ({ ...state, token }));
+          setData((state) => ({ ...state, token }));
           setResponseDvh(dvh);
         } else {
           alert('Sent data does not match with received data!');
@@ -173,7 +172,7 @@ function WebCheckout(props) {
   };
 
   /* -------------------- FN handleSubmit -------------------- */
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (submitType === 'submit') {
       if (data.dvh) {
