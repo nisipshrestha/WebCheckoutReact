@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 
 import {
   computeDvh,
@@ -7,10 +7,10 @@ import {
   getParameterByName,
   dataExtractor,
   apiSettings as settings,
-  API_BASE
-} from "../commonHelper";
-import FailurePage from "./FailurePage";
-import SuccessPage from "./components/SuccessForm";
+  API_BASE,
+} from '../commonHelper';
+import FailurePage from './FailurePage';
+import SuccessPage from './components/SuccessForm';
 
 const RedirectPage = () => {
   const [toDisplay, setToDisplay] = useState(null);
@@ -19,16 +19,16 @@ const RedirectPage = () => {
   const [transactionDetail, setTransactionDetail] = useState({});
   const [verifiedData, setVerifiedData] = useState({});
   useEffect(() => {
-    const urlData = getParameterByName("data");
+    const urlData = getParameterByName('data');
     if (urlData) setTransactionDetail(dataExtractor(urlData));
   }, []);
 
   const handleVerify = () => {
     const { dvh, ...rest } = transactionDetail;
-    const { apiKey, referenceId, token, totalAmount } = rest;
+    const { apiKey, referenceId, token, amount } = rest;
 
     (async ({ dvh, ...rest }) => {
-      settings.headers = { dvh, "content-type": "application/json" };
+      settings.headers = { dvh, 'content-type': 'application/json' };
       settings.body = JSON.stringify(rest);
       try {
         const fetchResponse = await fetch(
@@ -50,25 +50,25 @@ const RedirectPage = () => {
       apiKey,
       referenceId,
       token,
-      totalAmount: parseFloat(totalAmount),
-      dvh: computeDvh(rest)
+      amount: parseFloat(amount),
+      dvh: computeDvh(rest),
     });
   };
 
-  const { txnStatus = "" } = transactionDetail || {};
+  const { txnStatus = '' } = transactionDetail || {};
 
   const displayComponent = {
-    "00": (
+    '00': (
       <SuccessPage
         isVerified={isVerified}
         data={transactionDetail}
-        title={"Success"}
+        title={'Success'}
         handleVerify={handleVerify}
         verifiedData={verifiedData}
       />
     ),
-    "01": <FailurePage title={"Transaction Failed"} />,
-    "03": <FailurePage title={"Transaction Failed"} />
+    '01': <FailurePage title={'Transaction Failed'} />,
+    '03': <FailurePage title={'Transaction Failed'} />,
   };
   return (
     <Container>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Row,
@@ -8,18 +8,18 @@ import {
   ListGroup,
   Badge,
   CardGroup,
-  Card
-} from "react-bootstrap";
+  Card,
+} from 'react-bootstrap';
 
 const nameMapper = {
-  txnId: "Transaction Id",
-  referenceId: "Reference Id",
-  merchantName: "Merchant Name",
-  bankCode: "Bank Code",
-  amount: "Amount",
-  totalAmount: "Total Amount",
-  charge: "Charge",
-  discount: "Discount"
+  txnId: 'Transaction Id',
+  referenceId: 'Reference Id',
+  merchantName: 'Merchant Name',
+  bankCode: 'Bank Code',
+  amount: 'Amount',
+  amount: 'Total Amount',
+  charge: 'Charge',
+  discount: 'Discount',
 };
 
 const verificationNameMapper = { ...nameMapper };
@@ -28,7 +28,7 @@ export default ({
   title,
   handleVerify,
   isVerified = false,
-  verifiedData
+  verifiedData,
 }) => (
   <Container className="text-center">
     <h1 className="text-success display-4">{title.toUpperCase()}</h1>
@@ -57,7 +57,7 @@ export default ({
                 <Col>
                   <b>Transaction Id</b>
                 </Col>
-                <Col>{data.txnId || ""}</Col>
+                <Col>{data.txnId || ''}</Col>
               </Row>
             </ListGroup.Item>
 
@@ -66,7 +66,7 @@ export default ({
                 <Col>
                   <b>Reference Id</b>
                 </Col>
-                <Col>{data.referenceId || ""}</Col>
+                <Col>{data.referenceId || ''}</Col>
               </Row>
             </ListGroup.Item>
 
@@ -75,7 +75,7 @@ export default ({
                 <Col>
                   <b>Merchant Name</b>
                 </Col>
-                <Col>{data.merchantName || ""}</Col>
+                <Col>{data.merchantName || ''}</Col>
               </Row>
             </ListGroup.Item>
 
@@ -84,7 +84,7 @@ export default ({
                 <Col>
                   <b>Bank Code</b>
                 </Col>
-                <Col>{data.bankCode || ""}</Col>
+                <Col>{data.bankCode || ''}</Col>
               </Row>
             </ListGroup.Item>
 
@@ -93,34 +93,38 @@ export default ({
                 <Col>
                   <b>Amount</b>
                 </Col>
-                <Col>{data.amount || ""}</Col>
+                <Col>{data.amount || ''}</Col>
               </Row>
             </ListGroup.Item>
+
+            {data.charge && (
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Charge</b>
+                  </Col>
+                  <Col>{data.charge || ''}</Col>
+                </Row>
+              </ListGroup.Item>
+            )}
+
+            {data.discount && (
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <b>Discount</b>
+                  </Col>
+                  <Col>{data.discount || ''}</Col>
+                </Row>
+              </ListGroup.Item>
+            )}
 
             <ListGroup.Item>
               <Row>
                 <Col>
                   <b>Total Amount</b>
                 </Col>
-                <Col>{data.totalAmount || ""}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>
-                  <b>Charge</b>
-                </Col>
-                <Col>{data.charge || ""}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>
-                  <b>Discount</b>
-                </Col>
-                <Col>{data.discount || ""}</Col>
+                <Col>{data.amount || ''}</Col>
               </Row>
             </ListGroup.Item>
           </ListGroup>
@@ -131,7 +135,7 @@ export default ({
           <Card.Header>
             <h3>
               <Badge variant="success">
-                Verified Data{" "}
+                Verified Data{' '}
                 <svg
                   width="1em"
                   height="1em"
@@ -154,7 +158,7 @@ export default ({
                   <Col>
                     <b>Transaction Id</b>
                   </Col>
-                  <Col>{verifiedData.txnId || "" || ""}</Col>
+                  <Col>{verifiedData.txnId || ''}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -163,7 +167,7 @@ export default ({
                   <Col>
                     <b>Reference Id</b>
                   </Col>
-                  <Col>{verifiedData.referenceId || "" || ""}</Col>
+                  <Col>{verifiedData.referenceId || ''}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -172,7 +176,7 @@ export default ({
                   <Col>
                     <b>Merchant Name</b>
                   </Col>
-                  <Col>{verifiedData.merchantName || "" || ""}</Col>
+                  <Col>{verifiedData.merchantName || ''}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -181,7 +185,7 @@ export default ({
                   <Col>
                     <b>Bank Code</b>
                   </Col>
-                  <Col>{verifiedData.bankCode || "" || ""}</Col>
+                  <Col>{verifiedData.bankCode || ''}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -190,34 +194,38 @@ export default ({
                   <Col>
                     <b>Amount</b>
                   </Col>
-                  <Col>{verifiedData.amount || "" || ""}</Col>
+                  <Col>{verifiedData.amount || ''}</Col>
                 </Row>
               </ListGroup.Item>
+
+              {verifiedData.charge && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>
+                      <b>Charge</b>
+                    </Col>
+                    <Col>{verifiedData.charge || ''}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
+
+              {verifiedData.discount && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>
+                      <b>Discount</b>
+                    </Col>
+                    <Col>{verifiedData.discount || ''}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
 
               <ListGroup.Item>
                 <Row>
                   <Col>
                     <b>Total Amount</b>
                   </Col>
-                  <Col>{verifiedData.totalAmount || "" || ""}</Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <Row>
-                  <Col>
-                    <b>Charge</b>
-                  </Col>
-                  <Col>{verifiedData.charge || "" || ""}</Col>
-                </Row>
-              </ListGroup.Item>
-
-              <ListGroup.Item>
-                <Row>
-                  <Col>
-                    <b>Discount</b>
-                  </Col>
-                  <Col>{verifiedData.discount || "" || ""}</Col>
+                  <Col>{verifiedData.amount || ''}</Col>
                 </Row>
               </ListGroup.Item>
             </ListGroup>
