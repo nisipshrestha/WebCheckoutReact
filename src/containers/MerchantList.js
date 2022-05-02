@@ -27,7 +27,13 @@ const merchantList = [
     env: 'Demo',
     name: 'Web Checkout - Demo',
     apiKey: 'a276f6ea-fb28-4e89-ae88-25394d7de72e',
-    secretKey: '5f8907d7b9b04a44956e8e079a362c68 ',
+    secretKey: '5f8907d7b9b04a44956e8e079a362c68',
+  },
+  {
+    env: 'Demo',
+    name: 'web checkout demo server',
+    apiKey: 'e72bfbc7-641b-41b1-9844-bc3153b95bac',
+    secretKey: 'd71315a9c06e4cd58987894a4f615a35',
   },
   {
     env: 'Poc',
