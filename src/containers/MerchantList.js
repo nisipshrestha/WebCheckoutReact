@@ -35,11 +35,18 @@ const merchantList = [
     apiKey: 'e72bfbc7-641b-41b1-9844-bc3153b95bac',
     secretKey: 'd71315a9c06e4cd58987894a4f615a35',
   },
+  /* POC */
   {
     env: 'Poc',
     name: 'Web Checkout - POC',
     apiKey: '128d26ed-4c85-4327-b439-82bbd5b2cdb8',
     secretKey: '0e2a029569cd4347940346a0ac4a480e',
+  },
+  {
+    env: 'Poc',
+    name: 'khalti web checkout',
+    apiKey: '29dc791b-54a5-400e-ac04-348fb742e6f2',
+    secretKey: '36fe841f38144ab494102e378cd8eae6',
   },
   {
     env: 'Poc',
