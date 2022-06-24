@@ -60,7 +60,7 @@ const apiSettings = {
 
 /* -------------------- CONST apiSettings -------------------- */
 const environmentMapper = {
-  Development: 'bfi-merchant.ospsb.com/',
+  Development: 'dev-merchant.swifttech.com.np/',
   Testing: 'bfi-dev-merchant.ospsb.com/',
   Demo: 'bfi-demo-merchant.ospsb.com/',
   Poc: 'poc-merchant.ospsb.com/',
